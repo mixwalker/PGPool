@@ -1,0 +1,45 @@
+<div>
+    <p-table [value]="projectList" responsiveLayout="scroll" selectionMode="single" [(selection)]="selectedProject" dataKey="projectCode">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                โครงการ
+                <p-button icon="pi pi-plus-circle" (click)="onActivate()"></p-button>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>รหัสโครงการ</th>
+                <th>ชื่อโครงการ</th>
+                <th>รหัสลูกค้า</th>
+                <th>วันที่เริ่มต้นโครงการ</th>
+                <th>วันที่สิ้นสุดโครงการ</th>
+                <th>สถานะโครงการ</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-projectList>
+            <tr>
+                <td (click)="getProjectById(projectList.projRef)">{{projectList.projCode}}</td>
+                <td (click)="getProjectById(projectList.projRef)">{{projectList.projName}}</td>
+                <td (click)="getProjectById(projectList.projRef)">{{projectList.customerCode}}</td>
+                <td (click)="getProjectById(projectList.projRef)">{{projectList.projStartDate }}</td>
+                <td (click)="getProjectById(projectList.projRef)">{{projectList.projEndDate }}</td>
+                <td (click)="getProjectById(projectList.projRef)">
+                    <p-tag styleClass="mr-2" severity="warning" value="กำลังดำเนินการ"></p-tag>
+                </td>
+                <td>
+                    <button pButton pRipple type="button" (click)="getProjectById(projectList.projRef)" style="margin-right: 1.5vh;"><i class="pi pi-search" style="font-size: 1rem"></i></button>
+                    <button pButton pRipple type="button" class="p-button-danger"><i class="pi pi-trash" style="font-size: 1rem"></i></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                จำนวนโครงการทั้งหมด {{projectList ? projectList.length : 0 }} โครงการ
+            </div>
+        </ng-template>
+    </p-table>
+</div>
+<div *ngIf="activate">
+    <app-import-excel (unBlock)="unActivate($event)"></app-import-excel>
+</div>

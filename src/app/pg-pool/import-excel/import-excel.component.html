@@ -1,0 +1,73 @@
+<p-blockUI [blocked]="blockedImport">
+    <p-card header="Excel/CSV Import" subheader="Import a Excel/CSV File" [style]="{width: '360px'}" styleClass="p-card-shadow">
+        <div style="text-align: center;">
+            <label for="excelImage">
+                <i class="pi pi-file-excel" style="font-size: 10rem;cursor: pointer;"></i>
+            </label>
+            <input type="file" id="excelImage" style="display: none;visibility: hidden;" [(ngModel)]="linkName" (change)="onLoadExcel($event)" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">
+        </div>
+        <ng-template pTemplate="footer">
+            Filename : {{fileName}}
+            <div style="text-align: center;padding: 2vh;">
+                <button pButton pRipple type="button" label="ยืนยัน" class="p-button-success" style="margin-right:2vh" (click)="showExcelData()"></button>
+                <button pButton pRipple type="button" label="ยกเลิก" class="p-button-danger" (click)="closeImport()"></button>
+            </div>
+        </ng-template>
+    </p-card>
+</p-blockUI>
+<div *ngIf="showData">
+    <p-blockUI [blocked]="blockedData">
+        <p-card header="ข้อมูลภายใน {{fileName}}" subheader="กรุณาตรวจสอบข้อมูลภายในไฟล์ให้ถูกต้อง" [style]="{width: '1000px'}" styleClass="p-card-shadow">
+            <p-table [value]="data.person_in_charge" responsiveLayout="scroll" styleClass="p-datatable-sm">
+                <ng-template pTemplate="caption">
+                    <h1 style="text-align: center;">
+                        Team & Working Period
+                    </h1>
+                    <td style="padding-right: 40vh;">Project/Pre-Sale Code: {{data.projCode}}</td>
+                    <td>Customer Code: {{data.customerCode}}</td>
+                    <tr>
+                        <td>Project Name: {{data.projName}} </td>
+                    </tr>
+                    <tr>
+                        <td>Contract Start Date: {{data.projStartDate}} </td>
+                        <td>End Date: {{data.projEndDate}} </td>
+                    </tr>
+                    <br>
+                    <label for="department" class="block">Person in Charge </label>
+                </ng-template>
+                <ng-template pTemplate="header">
+                    <tr style="font-size: 15px;">
+                        <th>Item</th>
+                        <th>Position</th>
+                        <th>Emp No.</th>
+                        <th>Name</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Duration</th>
+                        <th>%Working</th>
+                        <th>Assigned<br>MM</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-person>
+                    <tr>
+                        <td>{{person.Item}}</td>
+                        <td>{{person.position}}</td>
+                        <td>{{person.empNo}}</td>
+                        <td>{{person.Name}}</td>
+                        <td>{{person.startDate}}</td>
+                        <td>{{person.endDate}}</td>
+                        <td>{{person.empDuration}}</td>
+                        <td>{{person.empWorking}}</td>
+                        <td>{{person.empAssigned}}</td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <ng-template pTemplate="footer">
+                <div style="text-align: center;padding: 2vh;">
+                    <button pButton pRipple type="button" label="ยืนยัน" class="p-button-success" style="margin-right:2vh" (click)="getDataByExcel()"></button>
+                    <button pButton pRipple type="button" label="ยกเลิก" class="p-button-danger" (click)="closeData()"></button>
+                </div>
+            </ng-template>
+        </p-card>
+    </p-blockUI>
+</div>

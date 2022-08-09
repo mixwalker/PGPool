@@ -1,0 +1,93 @@
+<div>
+    <p-table [value]="employeeList" responsiveLayout="scroll" selectionMode="single">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                รายละเอียดพนักงาน
+                <p-button icon="pi pi-home" (click)="goEmployeePage()"></p-button>
+            </div>
+            <div class="field">
+                <label for="name" class="block">ชื่อ-สกุลพนักงาน: {{employeeList.firstName + " " + employeeList.lastName}}</label>
+                <label for="position" class="block">ตำแหน่ง: {{employeeList.position}}</label>
+                <label for="department" class="block">แผนก: {{employeeList.department}}</label>
+            </div>
+            <label for="department" class="block">โครงการที่รับผิดชอบ </label>
+        </ng-template>
+    </p-table>
+</div>
+<p-table [value]="table" dataKey="project.projCode" responsiveLayout="scroll" [rowHover]="true">
+    <ng-template pTemplate="header">
+        <tr>
+            <th></th>
+            <th>รหัสโครงการ</th>
+            <th>ชื่อโครงการ</th>
+            <th>ชนิดโครงการ</th>
+            <th>วันที่เริ่มต้นโครงการ</th>
+            <th>วันที่สิ้นสุดโครงการ</th>
+            <th></th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-projectList let-expanded="expanded" [rowHover]="true">
+        <tr>
+            <td>
+                <button type="button" pButton pRipple [pRowToggler]="projectList" class="p-button-text p-button-rounded p-button-plain" [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"></button>
+            </td>
+            <td pRipple [pRowToggler]="projectList">{{projectList.project.projCode}}</td>
+            <td pRipple [pRowToggler]="projectList">{{projectList.project.projName}}</td>
+            <td pRipple [pRowToggler]="projectList">{{projectList.project.projType | projecttype}}</td>
+            <td pRipple [pRowToggler]="projectList">{{projectList.project.projStartDate}}</td>
+            <td pRipple [pRowToggler]="projectList">{{projectList.project.projEndDate}}</td>
+            <td>
+                <button (click)="getProjectById(projectList.project.projRef)" pButton pRipple type="button" style="margin-right: 1.5vh;"><i class="pi pi-search" style="font-size: 1rem"></i></button>
+                <button pButton pRipple type="button" class="p-button-danger"><i class="pi pi-trash" style="font-size: 1rem"></i></button>
+            </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="summary">
+        <div class="flex align-items-center justify-content-between">
+            จำนวนโครงการที่รับผิดชอบ {{table ? table.length : 0 }} โครงการ
+        </div>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-projectList>
+        <tr>
+            <td colspan="7">
+                <div class="p-3">
+                    <p-table [value]="projectList.employeeOperation" dataKey="opId">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th pSortableColumn="startDate">วันที่เริ่มต้นโครงการ
+                                    <p-sortIcon field="startDate"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="endDate">วันที่สิ้นสุดโครงการ
+                                    <p-sortIcon field="endDate"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="empDuration">Duration
+                                    <p-sortIcon field="empDuration"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="empWorking">%Working
+                                    <p-sortIcon field="empWorking"></p-sortIcon>
+                                </th>
+                                <th pSortableColumn="empAssigned">Assigned MM
+                                    <p-sortIcon field="empAssigned"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-employeeOperation>
+                            <tr>
+                                <td>{{employeeOperation.startDate}}</td>
+                                <td>{{employeeOperation.endDate}}</td>
+                                <td>{{employeeOperation.empDuration}}</td>
+                                <td>{{employeeOperation.empWorking}}</td>
+                                <td>{{employeeOperation.empAssigned}}</td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td colspan="6">ไม่มีข้อมูลการทำงานของพนักงาน</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+            </td>
+        </tr>
+    </ng-template>
+</p-table>

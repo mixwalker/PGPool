@@ -1,0 +1,43 @@
+<div>
+    <p-table #inputEL [value]="employeeList" responsiveLayout="scroll" selectionMode="single" [globalFilterFields]="['empNo','firstName','lastName','position','department']">
+        <ng-template pTemplate="caption">
+            <div class="flex align-items-center justify-content-between">
+                พนักงาน
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input type="text"  pInputText placeholder="กรุณากรอกชื่อพนักงาน" (input)="inputSearch(inputEL, $event)"/>
+                </span>
+            </div>
+        </ng-template>
+        <ng-template pTemplate="header">
+            <tr>
+                <th>รหัสพนักงาน</th>
+                <th>ชื่อ-สกุลพนักงาน</th>
+                <th>ตำแหน่ง</th>
+                <th>แผนก</th>
+                <th>สถานะการทำงาน %</th>
+                <th></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-employeeList>
+            <tr>
+                <td (click)="getEmployeeById(employeeList.empNo)" pColumn="empNo">{{employeeList.empNo}}</td>
+                <td (click)="getEmployeeById(employeeList.empNo)" pColumn="firstName">{{employeeList.firstName + " " + employeeList.lastName}}</td>
+                <td (click)="getEmployeeById(employeeList.empNo)" pColumn="position">{{employeeList.position}}</td>
+                <td (click)="getEmployeeById(employeeList.empNo)" pColumn="department">{{employeeList.department}}</td>
+                <td (click)="getEmployeeById(employeeList.empNo)">
+                    <p-tag styleClass="mr-2" severity="warning" value="{{employeeList.empWorking}} %"></p-tag>
+                </td>
+                <td>
+                    <button (click)="getEmployeeById(employeeList.empNo)" pButton pRipple type="button" style="margin-right: 1.5vh;"><i class="pi pi-search" style="font-size: 1rem"></i></button>
+                    <button pButton pRipple type="button" class="p-button-danger"><i class="pi pi-trash" style="font-size: 1rem"></i></button>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="summary">
+            <div class="flex align-items-center justify-content-between">
+                จำนวนพนักงานทั้งหมด {{employeeList ? employeeList.length : 0 }} คน
+            </div>
+        </ng-template>
+    </p-table>
+</div>
