@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { first, of } from 'rxjs';
 import { PGpoolService } from 'src/app/service/pgpool.service';
 import * as XLSX from 'xlsx';
 
@@ -27,18 +26,16 @@ export class ImportExcelComponent implements OnInit {
   operation: any[] = []
 
 
-  constructor(private pgpoolservice: PGpoolService, private messageService: MessageService) { }
+  constructor(private pgpoolservice: PGpoolService, private messageService: MessageService, private router: Router) { }
 
   ngOnInit(): void {
   }
 
-  refresh() {
-    this.ngOnInit();
-  }
-
   closeImport() {
+    this.showData = false
     this.blockedImport = false;
     this.unBlock.emit(this.blockedImport)
+
   }
 
   onLoadExcel(fileName: any) {
@@ -60,7 +57,6 @@ export class ImportExcelComponent implements OnInit {
   showExcelData() {
     this.showData = true
     this.blockedImport = false;
-
     this.rawData.map((item, index) => {
       if (item.includes('Project/Pre-Sale Code')) {
         const indexCode = item.findIndex(i => i == 'Project/Pre-Sale Code')
@@ -88,7 +84,6 @@ export class ImportExcelComponent implements OnInit {
       if (item.includes('Person in Charge')) {
         const person = this.rawData.slice(index + 3);
         person.forEach((dataArr, indexPerson) => {
-          console.log(dataArr.join().includes('Programmer Specialist 1'))
           if (dataArr.includes('Programmer') || dataArr.join().includes('Programmer Specialist')) {
             this.data['person_in_charge'].push(
               {
@@ -130,21 +125,27 @@ export class ImportExcelComponent implements OnInit {
   }
 
   closeData() {
+    this.fileName = "";
+    this.data = {
+      person_in_charge: []
+    };
+    this.rawData = [];
     this.showData = false;
     this.blockedImport = true;
   }
 
   getDataByExcel() {
-    console.log(this.data)
     //format Data
     let person_in_charge = [...this.data.person_in_charge];
     let emp: any = {};
+    person_in_charge.forEach((item) => {
+      const rawStartDate = item["startDate"].split('/');
+      const rawEndDate = item["endDate"].split('/');
+      item["startDate"] = new Date(`${rawStartDate[1]}/${rawStartDate[0]}/${rawStartDate[2] - 543}`);
+      item["endDate"] = new Date(`${rawEndDate[1]}/${rawEndDate[0]}/${rawEndDate[2] - 543}`);
+    });
     person_in_charge.forEach((item, index) => {
-      if (!item['empNo'] && Object.keys(emp).length > 0) {
-        this.employee.push(emp);
-        emp = {};
-        return
-      }
+      if (emp['empNo']) this.employee.push(emp);
       const prefix = item["Name"].split(' ')[0];
       const firstName = item["Name"].split(' ')[1];
       const lastName = item["Name"].split(' ')[2];
@@ -164,9 +165,8 @@ export class ImportExcelComponent implements OnInit {
         ]
       }
       const nextArr = person_in_charge.slice(index + 1);
-      let canRun = true;
-      nextArr.forEach((item) => {
-        if (canRun && !item['empNo']) {
+      for (let item of nextArr) {
+        if (!item['empNo']) {
           emp.employeeOperation.push(
             {
               startDate: item["startDate"],
@@ -177,15 +177,18 @@ export class ImportExcelComponent implements OnInit {
             }
           )
         } else {
-          canRun = false;
+          return
         }
-      })
+      }
     })
     //***//
     let operation: any = {};
     let projectList: any = {};
     let projCode = this.data['projCode'];
-
+    const rawStartDate = this.data["projStartDate"].split('/');
+    const rawEndDate = this.data["projEndDate"].split('/');
+    this.data["projStartDate"] = new Date(`${rawStartDate[1]}/${rawStartDate[0]}/${rawStartDate[2] - 543}`);
+    this.data["projEndDate"] = new Date(`${rawEndDate[1]}/${rawEndDate[0]}/${rawEndDate[2] - 543}`);
     this.pgpoolservice.addProject(this.data).subscribe({
       complete: () => {
         this.pgpoolservice.getProjectByProjCode(projCode).subscribe(response => {
@@ -198,35 +201,28 @@ export class ImportExcelComponent implements OnInit {
             }
             this.operation.push(operation)
           })
+          this.employee.forEach(item => {
+            this.pgpoolservice.addEmployee(item).subscribe();
+          });
 
           this.operation.forEach((item, index) => {
             this.pgpoolservice.addOperation(item).subscribe((res: any) => {
-              console.log(res.opId);
               for (let empOp of this.employee[index].employeeOperation) {
-                empOp['operation'] = {opId: res.opId}
-                this.pgpoolservice.addEmpOperation(empOp).subscribe(res =>{
-                })
+                empOp['operation'] = { opId: res.opId }
+                this.pgpoolservice.addEmpOperation(empOp).subscribe()
               }
             })
           })
         })
-        this.postEmployee();
+        this.closeImport();
+        this.messageService.add({ severity: 'success', summary: 'Import file สำเร็จ', detail: 'ข้อมูลภายในไฟล์ถูกเพิ่มแล้ว' });
+        setTimeout(() => { window.location.reload(); }, 2000)
       }, error: (e) => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Employee create error', life: 3000 });
+        this.messageService.add({ severity: 'error', summary: 'Import file ไม่สำเร็จ', detail: 'โครงการหรือชื่อโครงการมีอยู่แล้ว' });
+        console.log(e)
       }
     });
-    this.showData = false;
-    this.closeImport();
-  }
 
-  postEmployee() {
-    this.employee.forEach(item => {
-      this.pgpoolservice.addEmployee(item).subscribe({
-        complete: () => {
-        }, error: (e) => {
-        }
-      });
-    });
   }
 
 }

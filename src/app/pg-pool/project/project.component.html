@@ -1,9 +1,9 @@
-<div>
-    <p-table [value]="projectList" responsiveLayout="scroll" selectionMode="single" [(selection)]="selectedProject" dataKey="projectCode">
+<div class="card">
+    <p-table [value]="projectList" responsiveLayout="scroll" selectionMode="single" [(selection)]="selectedProject" dataKey="projectCode" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="แสดงข้อมูล {first} ถึง {last} จาก {totalRecords} โครงการทั้งหมด">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 โครงการ
-                <p-button icon="pi pi-plus-circle" (click)="onActivate()"></p-button>
+                <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-rounded p-button-success" (click)="onActivate()"></button>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -22,14 +22,14 @@
                 <td (click)="getProjectById(projectList.projRef)">{{projectList.projCode}}</td>
                 <td (click)="getProjectById(projectList.projRef)">{{projectList.projName}}</td>
                 <td (click)="getProjectById(projectList.projRef)">{{projectList.customerCode}}</td>
-                <td (click)="getProjectById(projectList.projRef)">{{projectList.projStartDate }}</td>
-                <td (click)="getProjectById(projectList.projRef)">{{projectList.projEndDate }}</td>
+                <td (click)="getProjectById(projectList.projRef)">{{projectList.projStartDate | formatDate}}</td>
+                <td (click)="getProjectById(projectList.projRef)">{{projectList.projEndDate | formatDate}}</td>
                 <td (click)="getProjectById(projectList.projRef)">
                     <p-tag styleClass="mr-2" severity="warning" value="กำลังดำเนินการ"></p-tag>
                 </td>
                 <td>
-                    <button pButton pRipple type="button" (click)="getProjectById(projectList.projRef)" style="margin-right: 1.5vh;"><i class="pi pi-search" style="font-size: 1rem"></i></button>
-                    <button pButton pRipple type="button" class="p-button-danger"><i class="pi pi-trash" style="font-size: 1rem"></i></button>
+                    <button pButton pRipple type="button" class="p-button-rounded" icon="pi pi-search" style="margin-right: 1.5vh;" (click)="getProjectById(projectList.projRef)"></button>
+                    <button pButton pRipple type="button" class="p-button-danger p-button-rounded" icon="pi pi-trash" (click)="deleteItem(projectList.projRef)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -43,3 +43,5 @@
 <div *ngIf="activate">
     <app-import-excel (unBlock)="unActivate($event)"></app-import-excel>
 </div>
+<p-toast></p-toast>
+<button pButton pRipple type="button" class="p-button-rounded" icon="pi pi-search" style="margin-right: 1.5vh;" (click)="test()"></button>

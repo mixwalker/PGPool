@@ -1,5 +1,5 @@
-<div>
-    <p-table #inputEL [value]="employeeList" responsiveLayout="scroll" selectionMode="single" [globalFilterFields]="['empNo','firstName','lastName','position','department']">
+<div class="card">
+    <p-table #inputEL [value]="employeeList" responsiveLayout="scroll" selectionMode="single" [globalFilterFields]="['empNo','firstName','lastName','position','department']" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="แสดงข้อมูลพนักงาน {first} ถึง {last} จาก {totalRecords} คน">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 พนักงาน
@@ -29,8 +29,8 @@
                     <p-tag styleClass="mr-2" severity="warning" value="{{employeeList.empWorking}} %"></p-tag>
                 </td>
                 <td>
-                    <button (click)="getEmployeeById(employeeList.empNo)" pButton pRipple type="button" style="margin-right: 1.5vh;"><i class="pi pi-search" style="font-size: 1rem"></i></button>
-                    <button pButton pRipple type="button" class="p-button-danger"><i class="pi pi-trash" style="font-size: 1rem"></i></button>
+                    <button (click)="getEmployeeById(employeeList.empNo)" pButton pRipple type="button" style="margin-right: 1.5vh;" icon="pi pi-search" class="p-button-rounded"></button>
+                    <button pButton pRipple type="button" class="p-button-danger p-button-rounded" icon="pi pi-trash" (click)="deleteItem(employeeList.empNo)"></button>
                 </td>
             </tr>
         </ng-template>
@@ -41,3 +41,4 @@
         </ng-template>
     </p-table>
 </div>
+<p-toast></p-toast>

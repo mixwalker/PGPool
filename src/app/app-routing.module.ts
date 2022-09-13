@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { EmployeeDetailComponent } from './pg-pool/employee/employee-detail/employee-detail.component';
 import { EmployeeComponent } from './pg-pool/employee/employee.component';
+import { EstimationComponent } from './pg-pool/estimation/estimation.component';
 import { PgPoolComponent } from './pg-pool/pg-pool.component';
 import { ProjectDetailComponent } from './pg-pool/project/project-detail/project-detail.component';
 import { ProjectComponent } from './pg-pool/project/project.component';
@@ -29,6 +30,10 @@ const routes: Routes = [
       {
         path: 'project/detail/:id',
         component: ProjectDetailComponent
+      },
+      {
+        path: 'estimation',
+        component: EstimationComponent
       }
     ]
   }

@@ -1,7 +1,7 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component,OnInit} from '@angular/core';
 import { Router } from '@angular/router';
 import { PGpoolService } from 'src/app/service/pgpool.service';
-import { auditTime, debounce, debounceTime } from 'rxjs';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-employee',
@@ -10,8 +10,8 @@ import { auditTime, debounce, debounceTime } from 'rxjs';
 })
 export class EmployeeComponent implements OnInit {
 
-  employeeList:any = [];
-  constructor(private pgpoolservice:PGpoolService,private router:Router) { 
+  employeeList: any = [];
+  constructor(private pgpoolservice: PGpoolService, private router: Router,private messageService: MessageService) {
   }
 
   ngOnInit(): void {
@@ -20,13 +20,24 @@ export class EmployeeComponent implements OnInit {
     })
   }
 
-  getEmployeeById(id:string){
-    this.router.navigate(['pg-pool/employee/detail/',id])
+  getEmployeeById(id: string) {
+    this.router.navigate(['pg-pool/employee/detail/', id])
   }
 
-  inputSearch(inputEL: any, event: any){
+  inputSearch(inputEL: any, event: any) {
     inputEL.filterGlobal(event.target.value, 'contains')
-  }  
+  }
+
+  deleteItem(empNo: string) {
+    this.pgpoolservice.deleteEmployee(empNo).subscribe({
+      complete: () => {
+        this.messageService.add({ severity: 'success', summary: 'ลบข้อมูลสำเร็จ', detail: 'ข้อมูลพนักงานที่ต้องการลบถูกลบแล้ว' });
+        setTimeout(() => { window.location.reload(); }, 2000)
+      }, error: () => {
+        this.messageService.add({ severity: 'error', summary: 'ลบข้อมูลไม่สำเร็จ', detail: 'ข้อมูลที่พนักงานต้องการลบยังไม่ถูกลบ' });
+      }
+    })
+  }
 
 
 }

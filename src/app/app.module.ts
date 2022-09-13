@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -29,6 +29,18 @@ import {ChartModule} from 'primeng/chart';
 import { MessageService } from 'primeng/api';
 import {ToastModule} from 'primeng/toast';
 import {MessageModule} from 'primeng/message';
+import {DropdownModule} from 'primeng/dropdown';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { FormatDatePipe } from './pipe/format-date.pipe';
+import { EditProjectComponent } from './pg-pool/edit/edit-project/edit-project.component';
+import { EditEmployeeComponent } from './pg-pool/edit/edit-employee/edit-employee.component';
+import {CalendarModule} from 'primeng/calendar';
+import { EditEmployeeOperationComponent } from './pg-pool/edit/edit-employee-operation/edit-employee-operation.component';
+import {BadgeModule} from 'primeng/badge';
+import {KnobModule} from 'primeng/knob';
+import {ProgressBarModule} from 'primeng/progressbar';
+import { EstimationComponent } from './pg-pool/estimation/estimation.component';
+import {FieldsetModule} from 'primeng/fieldset';
 
 @NgModule({
   declarations: [
@@ -39,7 +51,12 @@ import {MessageModule} from 'primeng/message';
     SidenavComponent,
     EmployeeDetailComponent,
     ProjectDetailComponent,
-    ImportExcelComponent
+    ImportExcelComponent,
+    FormatDatePipe,
+    EditProjectComponent,
+    EditEmployeeComponent,
+    EditEmployeeOperationComponent,
+    EstimationComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +77,14 @@ import {MessageModule} from 'primeng/message';
     MessagesModule,
     ReactiveFormsModule,
     ToastModule,
-    MessageModule
+    MessageModule,
+    DropdownModule,
+    BrowserAnimationsModule,
+    CalendarModule,
+    BadgeModule,
+    KnobModule,
+    ProgressBarModule,
+    FieldsetModule
     
   ],
   providers: [MessageService],

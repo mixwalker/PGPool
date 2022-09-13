@@ -9,5 +9,10 @@ export const navbarData = [
         routeLink: 'pg-pool/employee',
         icon:'pi pi-users',
         label:'พนักงาน'
+    },
+    {
+        routeLink: 'pg-pool/estimation',
+        icon:'pi pi-chart-line',
+        label:'การประมาณการ'
     }
 ];

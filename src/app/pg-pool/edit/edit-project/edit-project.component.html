@@ -1,0 +1,49 @@
+<p-blockUI [blocked]="blockedImport">
+    <p-card header="แก้ไขข้อมูลโครงการ" subheader="กรุณากรอกข้อมูลที่ต้องการแก้ไข" [style]="{width: '50vh'}" styleClass="p-card-shadow">
+        <p-scrollPanel [style]="{width: '100%', height: '60vh'}" styleClass="custombar1">
+            <div class="field">
+                <label for="projCode" class="block"> รหัสโครงการ</label>
+                <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="project.projCode">
+            </div>
+            <div class="field">
+                <label for="projName" class="block">ชื่อโครงการ</label>
+                <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="project.projName">
+            </div>
+            <div class="field">
+                <label for="projAbbrEng" class="block"> ชื่อย่อโครงการภาษาอังกฤษ</label>
+                <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="project.projAbbrEng">
+            </div>
+            <div class="field">
+                <label for="projAbbrThai" class="block">ชื่อย่อโครงการภาษาไทย</label>
+                <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="project.projAbbrThai">
+            </div>
+            <div class="field">
+                <label for="projType" class="block">ชนิดโครงการ</label>
+                <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="project.projType">
+            </div>
+            <div class="field">
+                <label for="customerCode" class="block">รหัสลูกค้า</label>
+                <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="project.customerCode">
+            </div>
+            <div class="field">
+                <label for="limitPerson" class="block">พนักงานที่ต้องการ</label>
+                <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="project.limitPerson">
+            </div>
+            <div class="field">
+                <label for="startDate" class="block">วันที่เริ่มต้นโครงการ{{project.projStartDate}}</label>
+                <p-calendar [showIcon]="true" inputId="icon" [style]="{width: '100%'}" dateFormat="dd/mm/yy" [(ngModel)]="project.projStartDate" appendTo="body"></p-calendar>
+            </div>
+            <div class="field">
+                <label for="endDate" class="block">วันที่สิ้นสุดโครงการ</label>
+                <p-calendar [showIcon]="true" inputId="icon" [style]="{width: '100%'}" dateFormat="dd/mm/yy" [(ngModel)]="project.projEndDate" appendTo="body"></p-calendar>
+            </div>
+        </p-scrollPanel>
+        <ng-template pTemplate="footer">
+            <div style="text-align: center;padding: 2vh;">
+                <button pButton pRipple type="button" label="ยืนยัน" class="p-button-success" style="margin-right:2vh" (click)="updateProject()"></button>
+                <button pButton pRipple type="button" label="ยกเลิก" class="p-button-danger" (click)="closeImport()"></button>
+            </div>
+        </ng-template>
+    </p-card>
+</p-blockUI>
+<p-toast></p-toast>

@@ -8,7 +8,7 @@ import { PGpoolService } from '../service/pgpool.service';
 })
 export class PgPoolComponent implements OnInit {
 
-  constructor(private pgpoolservice:PGpoolService,) { 
+  constructor() { 
   }
 
   ngOnInit(): void {

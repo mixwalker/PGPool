@@ -1,7 +1,5 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Subject, tap } from 'rxjs';
-import {Message} from 'primeng//api';
 import {MessageService} from 'primeng/api';
 
 @Injectable({
@@ -9,7 +7,7 @@ import {MessageService} from 'primeng/api';
 })
 export class PGpoolService {
 
-  constructor(private http: HttpClient,private messageService: MessageService) { 
+  constructor(private http: HttpClient) { 
   }
 
   getAllProject() {
@@ -20,6 +18,10 @@ export class PGpoolService {
     return this.http.get<any>('api/employee');
   }
 
+  getAllOperation() {
+    return this.http.get<any>('api/operation');
+  }
+
   getEmplyoeeById(id:string) {
     return this.http.get<any>(`api/employee/${id}`);
   }
@@ -28,11 +30,11 @@ export class PGpoolService {
     return this.http.get<any>(`api/project/${id}`);
   }
 
-  getProjectEmployee(id:number){
+  getOpertationByProject(id:number){
     return this.http.get<any>(`api/operation/findproject/${id}`);
   }
 
-  getEmployeeProject(id:string){
+  getOpertationByEmployee(id:string){
     return this.http.get<any>(`api/operation/findemployee/${id}`);
   }
 
@@ -40,7 +42,10 @@ export class PGpoolService {
     return this.http.get<any>(`api/project/findprojectbyprojcode/${projCode}`);
   }
 
-  //post
+  getAmountEmployees(){
+    return this.http.get<any>(`api/amount_employees`)
+  }
+
   addEmployee(employee: any) {
     return this.http.post('api/employee', employee);
   }
@@ -55,6 +60,30 @@ export class PGpoolService {
 
   addEmpOperation(empOp: any) {
     return this.http.post('api/employee_operation', empOp);
+  }
+
+  deleteEmployee(empNo:string){
+    return this.http.delete(`api/employee/${empNo}`);
+  }
+
+  deleteProject(projRef:Number){
+    return this.http.delete(`api/project/${projRef}`);
+  }
+
+  deleteOperation(projRef:Number,empNo:string){
+    return this.http.delete(`api/operation/?projRef=${projRef}&empNo=${empNo}`);
+  }
+
+  updateProject(project:any){
+    return this.http.put(`api/project/${project.projRef}`,project);
+  }
+
+  updateEmployee(employee:any){
+    return this.http.put(`api/employee/${employee.empNo}`,employee);
+  }
+
+  sendEmail(emailData:any){
+    return this.http.post(`mail/send`,emailData);
   }
 
 

@@ -1,7 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+@font-face {
+    font-family: prompt;
+    src: url(assets/font/Prompt-Light.ttf) format("opentype");
+}
+
 * {
+    font-family: prompt;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -28,4 +34,29 @@ body {
     .card-body {
         padding: 1rem 1.5rem;
     }
+}
+
+.p-scrollpanel {
+    p {
+        padding: .5rem;
+        line-height: 1.5;
+        margin: 0;
+    }
+    &.custombar1 {
+        .p-scrollpanel-wrapper {
+            border-right: 9px solid var(--layer-1);
+        }
+        .p-scrollpanel-bar {
+            background-color: var(--primary-color);
+            opacity: 1;
+            transition: background-color .2s;
+            &:hover {
+                background-color: #007ad9;
+            }
+        }
+    }
+}
+
+.p-dropdown .p-dropdown-label {
+    font-family: prompt;
 }
