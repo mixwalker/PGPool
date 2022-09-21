@@ -29,9 +29,11 @@ export class EditEmployeeComponent implements OnInit {
   updateEmployee() {
     this.pgpoolservice.updateEmployee(this.employee).subscribe({
       complete: () => {
+        this.closeImport();
         this.messageService.add({ severity: 'success', summary: 'แก้ไขข้อมูลสำเร็จ', detail: 'ข้อมูลที่ต้องการถูกแก้ไขแล้ว' });
         setTimeout(() => { window.location.reload(); }, 2000)
       }, error: () => {
+        this.closeImport();
         this.messageService.add({ severity: 'error', summary: 'แก้ไขข้อมูลไม่สำเร็จ', detail: 'ข้อมูลที่ต้องการยังไม่ถูกแก้ไข' });
       }
     });

@@ -1,0 +1,27 @@
+<div class="displays" style="margin-top: 8rem;">
+    <p-card header="ยินดีต้อนรับสู่ระบบ PG-Pool" [style]="{width: '25rem'}" styleClass="p-card-shadow">
+        <ng-template pTemplate="header">
+            <div class="displays">
+                <div style="width: 12rem;">
+                    <img alt="Card" src="assets/picture/cdg.png">
+                </div>
+            </div>
+        </ng-template>
+        <div class="field" style="margin-bottom: 3vh;">
+            <span class="p-float-label">
+                <input id="username" type="text" pInputText [(ngModel)]="username" [style]="{'width': '100%'}">
+                <label for="username">Username</label>
+            </span>
+        </div>
+        <div class="field">
+            <span class="p-float-label">
+                <input id="password" type="password" pInputText [(ngModel)]="password" [style]="{'width': '100%'}"><br>
+                <label for="password">Password</label>
+            </span>
+        </div>
+        <ng-template pTemplate="footer">
+            <p-button label="Log-in" icon="pi pi-sign-in" [style]="{'width': '100%'}" (click)="login()"></p-button>
+        </ng-template>
+    </p-card>
+</div>
+<p-toast></p-toast>

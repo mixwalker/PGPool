@@ -82,6 +82,9 @@
                                     <th pSortableColumn="empAssigned">Assigned MM
                                         <p-sortIcon field="empAssigned"></p-sortIcon>
                                     </th>
+                                    <th>
+
+                                    </th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-employeeOperation>
@@ -91,6 +94,10 @@
                                     <td>{{employeeOperation.empDuration}}</td>
                                     <td>{{employeeOperation.empWorking}}</td>
                                     <td>{{employeeOperation.empAssigned}}</td>
+                                    <td>
+                                        <button pButton pRipple type="button" class="p-button-rounded  p-button-warning" icon="pi pi-pencil" style="margin-right: 1.5vh;color: white;" (click)="onActivateEmpOp(employeeOperation)"></button>
+                                        <button pButton pRipple type="button" class="p-button-danger p-button-rounded" icon="pi pi-trash"></button>
+                                    </td>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="summary">
@@ -118,5 +125,8 @@
 </div>
 <div *ngIf="activate">
     <app-edit-project (unBlock)="unActivate($event)" [projectList]="projectList"></app-edit-project>
+</div>
+<div *ngIf="activateEmpOp">
+    <app-edit-employee-operation (unBlock)="unActivateEmpOp($event)" [empOpList]="getEmpOp"></app-edit-employee-operation>
 </div>
 <p-toast></p-toast>

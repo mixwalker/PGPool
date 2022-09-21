@@ -13,12 +13,10 @@
                 <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
             </a>
         </li>
-    </ul>
-    <ul class="sidenav-nav">
-        <li class="sidenav-nav-item" *ngFor="let data of navData">
-            <a class="sidenav-nav-link" [routerLink]="[data.routeLink]" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
-                <i class="sidenav-link-icon" [class]="data.icon"></i>
-                <span class="sidenav-link-text" *ngIf="collapsed">{{data.label}}</span>
+        <li class="sidenav-nav-item" (click)="logout()" *ngIf="displaysLogout">
+            <a class="sidenav-nav-link">
+                <i class="pi pi-sign-out" style="font-size: 22px;width: 5rem;min-width: 2rem;margin: 0 0.5rem;text-align: center;"></i>
+                <span class="sidenav-link-text" *ngIf="collapsed">ออกจากระบบ</span>
             </a>
         </li>
     </ul>

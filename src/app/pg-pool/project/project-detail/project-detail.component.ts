@@ -30,7 +30,35 @@ export class ProjectDetailComponent implements OnInit {
   subChartOptions: any;
   mainChart: any;
   activate: boolean = false;
+  activateEmpOp:boolean =false;
   amountPerson!:number;
+  getEmpOp:any = {};
+
+  borderColor= [
+    '#FFA726',
+    '#42A5F5',
+    '#66BB6A',
+    '#7E57C2',
+    '#26C6DA',
+    'rgba(255,99,132,1)',
+    '#D67AB1',
+    '#241E4E',
+    '#960200',
+    '#42E2B8'
+  ] 
+
+  backgroundCodeColor = [
+    'rgba(255,167,38,0.2)',
+    'rgba(66, 165, 245, 0.2)',
+    'rgba(102, 187, 106, 0.2)',
+    'rgba(126, 87, 194, 0.2)',
+    'rgba(38, 198, 218, 0.2)',
+    'rgba(255,99,132,0.2)',
+    'rgba(214, 122, 177, 0.2)',
+    'rgba(36, 30, 78, 0.2)',
+    'rgba(150, 2, 0, 0.2)',
+    'rgba(66, 226, 184, )'
+  ]
 
   constructor(private pgpoolservice: PGpoolService, private router: Router, private messageService: MessageService) {
     this.months = [
@@ -173,15 +201,14 @@ export class ProjectDetailComponent implements OnInit {
       datasets: [],
     };
 
-    for (let emp of this.table) {
+    for (let [i,emp] of this.table.entries()) {
       let name = emp.employee.firstName + " " + emp.employee.lastName;
       let datasets: any = {
         label: name,
         data: [],
-        fill: true,
-        borderColor: '#FFA726',
-        tension: .4,
-        backgroundColor: 'rgba(255,167,38,0.2)'
+        fill: false,
+        borderColor: '',
+        tension: .4
       }
       let sumArr = [];
       for (let empOp of emp.employeeOperation) {
@@ -226,6 +253,8 @@ export class ProjectDetailComponent implements OnInit {
       for (let work of workArrLoop) {
         datasets.data.push(work);
       }
+      datasets.borderColor = this.borderColor[i];
+      datasets.backgroundColor = this.backgroundCodeColor[i];
       this.mainChart.datasets.push(datasets);
     }
   }
@@ -241,21 +270,13 @@ export class ProjectDetailComponent implements OnInit {
       this.chart.labels.push(`${i} ${monthName} ${year}`);
     }
 
-    const codeColor = [
-      'rgba(255,167,38,0.2)',
-      'rgba(255, 99, 71, 0.2)',
-      'rgba(66, 165, 245, 0.2)',
-      'rgba(0, 187, 126, 0.2)'
-
-    ]
-
     for (let [i, emp] of empOperation.entries()) {
       let labelDate;
       let datasets: any = {
         label: '',
         data: [],
         fill: true,
-        borderColor: '#FFA726',
+        borderColor: '',
         tension: .4,
         backgroundColor: ''
       }
@@ -274,7 +295,8 @@ export class ProjectDetailComponent implements OnInit {
           datasets.data.push(0);
         }
       }
-      datasets.backgroundColor = codeColor[i];
+      datasets.borderColor = this.borderColor[i];
+      datasets.backgroundColor = this.backgroundCodeColor[i];
       this.chart.datasets.push(datasets);
       console.log(this.chart)
 
@@ -320,6 +342,15 @@ export class ProjectDetailComponent implements OnInit {
 
   unActivate(unActivate: boolean) {
     this.activate = unActivate;
+  }
+
+  onActivateEmpOp(empOp:any) {
+    this.activateEmpOp = true;
+    this.getEmpOp = empOp;
+  }
+
+  unActivateEmpOp(unActivate: boolean) {
+    this.activateEmpOp = unActivate;
   }
 
 }

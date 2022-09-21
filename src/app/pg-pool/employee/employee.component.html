@@ -13,9 +13,9 @@
             <tr>
                 <th>รหัสพนักงาน</th>
                 <th>ชื่อ-สกุลพนักงาน</th>
-                <th>ตำแหน่ง</th>
-                <th>แผนก</th>
-                <th>สถานะการทำงาน %</th>
+                <th style="width: 20vh;">ตำแหน่ง</th>
+                <th style="width: 20vh;text-align: center;">แผนก</th>
+                <th style="width: 20vh;text-align: center;">สถานะการทำงาน</th>
                 <th></th>
             </tr>
         </ng-template>
@@ -23,10 +23,13 @@
             <tr>
                 <td (click)="getEmployeeById(employeeList.empNo)" pColumn="empNo">{{employeeList.empNo}}</td>
                 <td (click)="getEmployeeById(employeeList.empNo)" pColumn="firstName">{{employeeList.firstName + " " + employeeList.lastName}}</td>
-                <td (click)="getEmployeeById(employeeList.empNo)" pColumn="position">{{employeeList.position}}</td>
-                <td (click)="getEmployeeById(employeeList.empNo)" pColumn="department">{{employeeList.department}}</td>
-                <td (click)="getEmployeeById(employeeList.empNo)">
-                    <p-tag styleClass="mr-2" severity="warning" value="{{employeeList.empWorking}} %"></p-tag>
+                <td (click)="getEmployeeById(employeeList.empNo)" pColumn="position" style="width: 20vh">{{employeeList.position}}</td>
+                <td (click)="getEmployeeById(employeeList.empNo)" pColumn="department" style="width: 20vh;text-align: center;">{{employeeList.department}}</td>
+                <td (click)="getEmployeeById(employeeList.empNo)" *ngIf="employeeList.progress !== null">
+                    <p-tag styleClass="mr-2" severity="warning" value="กำลังดำเนินงาน {{employeeList.progress}} %" [style]="{'width': '20vh','font-size': '15px','color':'white'}"></p-tag>
+                </td>
+                <td (click)="getEmployeeById(employeeList.empNo)" *ngIf="employeeList.progress === null">
+                    <p-tag p-tag styleClass="mr-2" severity="success" value="ว่าง" [style]="{'width': '20vh','font-size': '15px','color':'white'}"></p-tag>
                 </td>
                 <td>
                     <button (click)="getEmployeeById(employeeList.empNo)" pButton pRipple type="button" style="margin-right: 1.5vh;" icon="pi pi-search" class="p-button-rounded"></button>

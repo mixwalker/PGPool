@@ -11,7 +11,6 @@ export class EditProjectComponent implements OnInit {
 
   @Input() projectList: any = {};
   @Output() unBlock = new EventEmitter;
-  @Output() refreshAndMessage = new EventEmitter;
   blockedImport: boolean = true;
   project:any;
  
@@ -31,9 +30,11 @@ export class EditProjectComponent implements OnInit {
   updateProject() {
     this.pgpoolservice.updateProject(this.project).subscribe({
       complete: () => {
+        this.closeImport();
         this.messageService.add({ severity: 'success', summary: 'แก้ไขข้อมูลสำเร็จ', detail: 'ข้อมูลที่ต้องการถูกแก้ไขแล้ว' });
         setTimeout(() => { window.location.reload(); }, 2000)
       }, error: () => {
+        this.closeImport();
         this.messageService.add({ severity: 'error', summary: 'แก้ไขข้อมูลไม่สำเร็จ', detail: 'ข้อมูลที่ต้องการยังไม่ถูกแก้ไข' });
       }
     });

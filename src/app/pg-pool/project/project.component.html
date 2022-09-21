@@ -24,8 +24,17 @@
                 <td (click)="getProjectById(projectList.projRef)">{{projectList.customerCode}}</td>
                 <td (click)="getProjectById(projectList.projRef)">{{projectList.projStartDate | formatDate}}</td>
                 <td (click)="getProjectById(projectList.projRef)">{{projectList.projEndDate | formatDate}}</td>
-                <td (click)="getProjectById(projectList.projRef)">
-                    <p-tag styleClass="mr-2" severity="warning" value="กำลังดำเนินการ"></p-tag>
+                <td (click)="getProjectById(projectList.projRef)" *ngIf="projectList.status == 1">
+                    <p-tag styleClass="mr-2" value="รอการดำเนินการ" [style]="{'width': '20vh','font-size': '15px','color': 'white','background': '#D4D4D4'}"></p-tag>
+                </td>
+                <td (click)="getProjectById(projectList.projRef)" *ngIf="projectList.status == 2">
+                    <p-tag styleClass="mr-2" severity="warning" value="กำลังดำเนินการ" [style]="{'width': '20vh','font-size': '15px','color': 'white'}"></p-tag>
+                </td>
+                <td (click)="getProjectById(projectList.projRef)" *ngIf="projectList.status == 3">
+                    <p-tag styleClass="mr-2" severity="danger" value="เกินกำหนด" [style]="{'width': '20vh','font-size': '15px'}"></p-tag>
+                </td>
+                <td (click)="getProjectById(projectList.projRef)" *ngIf="projectList.status == 4">
+                    <p-tag styleClass="mr-2" severity="success" value="เสร็จสิ้น" [style]="{'width': '20vh','font-size': '15px'}"></p-tag>
                 </td>
                 <td>
                     <button pButton pRipple type="button" class="p-button-rounded" icon="pi pi-search" style="margin-right: 1.5vh;" (click)="getProjectById(projectList.projRef)"></button>
@@ -44,4 +53,4 @@
     <app-import-excel (unBlock)="unActivate($event)"></app-import-excel>
 </div>
 <p-toast></p-toast>
-<button pButton pRipple type="button" class="p-button-rounded" icon="pi pi-search" style="margin-right: 1.5vh;" (click)="test()"></button>
+<!-- <button pButton pRipple type="button" class="p-button-rounded" icon="pi pi-search" style="margin-right: 1.5vh;" (click)="test()"></button> -->

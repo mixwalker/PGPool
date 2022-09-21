@@ -11,13 +11,15 @@ import { MessageService } from 'primeng/api';
 export class EmployeeComponent implements OnInit {
 
   employeeList: any = [];
+  operationList:any = [];
+  status:any;
   constructor(private pgpoolservice: PGpoolService, private router: Router,private messageService: MessageService) {
   }
 
   ngOnInit(): void {
     this.pgpoolservice.getAllEmplyoee().subscribe(response => {
       this.employeeList = response
-    })
+    });
   }
 
   getEmployeeById(id: string) {

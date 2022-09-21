@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { LoginService } from '../service/login.service';
 import { PGpoolService } from '../service/pgpool.service';
 
 @Component({
@@ -8,10 +9,11 @@ import { PGpoolService } from '../service/pgpool.service';
 })
 export class PgPoolComponent implements OnInit {
 
-  constructor() { 
+  constructor(private loginService: LoginService) { 
   }
-
+  user: any;
   ngOnInit(): void {
+    this.user = this.loginService.user
   }
 
   @Input() collapsed = false;
@@ -26,5 +28,8 @@ export class PgPoolComponent implements OnInit {
     }
     return styleClass;
   }
+
+
+  
 
 }

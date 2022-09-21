@@ -82,9 +82,15 @@ export class PGpoolService {
     return this.http.put(`api/employee/${employee.empNo}`,employee);
   }
 
+  updateEmployeeOperation(empOp:any){
+    return this.http.put(`api/employee_operation/${empOp.empOpId}`,empOp);
+  }
+
   sendEmail(emailData:any){
     return this.http.post(`mail/send`,emailData);
   }
 
-
+  login(username:string,password:string){
+    return this.http.get<any>(`api/users/auth?username=${username}&password=${password}`);
+  }
 }

@@ -14,5 +14,5 @@ export const navbarData = [
         routeLink: 'pg-pool/estimation',
         icon:'pi pi-chart-line',
         label:'การประมาณการ'
-    }
+    },
 ];

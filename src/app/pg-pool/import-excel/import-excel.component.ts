@@ -218,6 +218,7 @@ export class ImportExcelComponent implements OnInit {
         this.messageService.add({ severity: 'success', summary: 'Import file สำเร็จ', detail: 'ข้อมูลภายในไฟล์ถูกเพิ่มแล้ว' });
         setTimeout(() => { window.location.reload(); }, 2000)
       }, error: (e) => {
+        this.closeImport();
         this.messageService.add({ severity: 'error', summary: 'Import file ไม่สำเร็จ', detail: 'โครงการหรือชื่อโครงการมีอยู่แล้ว' });
         console.log(e)
       }

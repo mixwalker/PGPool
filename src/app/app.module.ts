@@ -41,6 +41,8 @@ import {KnobModule} from 'primeng/knob';
 import {ProgressBarModule} from 'primeng/progressbar';
 import { EstimationComponent } from './pg-pool/estimation/estimation.component';
 import {FieldsetModule} from 'primeng/fieldset';
+import {RadioButtonModule} from 'primeng/radiobutton';
+import { LogInComponent } from './pg-pool/log-in/log-in/log-in.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +58,8 @@ import {FieldsetModule} from 'primeng/fieldset';
     EditProjectComponent,
     EditEmployeeComponent,
     EditEmployeeOperationComponent,
-    EstimationComponent
+    EstimationComponent,
+    LogInComponent
   ],
   imports: [
     BrowserModule,
@@ -84,8 +87,8 @@ import {FieldsetModule} from 'primeng/fieldset';
     BadgeModule,
     KnobModule,
     ProgressBarModule,
-    FieldsetModule
-    
+    FieldsetModule,
+    RadioButtonModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

@@ -1,0 +1,14 @@
+.displays {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid {
+    grid-gap: 2rem;
+}
+
+.grid-item {
+    cursor: pointer;
+}

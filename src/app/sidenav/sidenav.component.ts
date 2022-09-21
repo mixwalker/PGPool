@@ -1,4 +1,6 @@
-import { Component, Output,EventEmitter, OnInit } from '@angular/core';
+import { Component, Output,EventEmitter, OnInit, Input } from '@angular/core';
+import { MessageService } from 'primeng/api';
+import { LoginService } from '../service/login.service';
 import { navbarData } from './nav-data';
 
 interface SideNavToggle{
@@ -13,13 +15,21 @@ interface SideNavToggle{
 })
 export class SidenavComponent implements OnInit {
   
-   @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
+  displaysLogout:boolean = false;
+  @Output() onToggleSideNav: EventEmitter<SideNavToggle> = new EventEmitter();
   collapsed = false;
   screenWidth = 0;
   navData = navbarData;
   cdgPic:string = "assets/picture/cdg.png";
+
+  constructor(private loginService:LoginService,private messageService: MessageService) { }
+
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;
+
+    if (localStorage.getItem("pg-pool") !== null) {
+      this.displaysLogout = true;
+    }
   }
 
   toggleCollapse():void{
@@ -32,6 +42,9 @@ export class SidenavComponent implements OnInit {
     this.onToggleSideNav.emit({collapsed: this.collapsed,screenWidth: this.screenWidth})
   }
 
-  
+  logout(){
+    this.loginService.logout();
+    window.location.href = "pg-pool/login";
+  }
 
 }
