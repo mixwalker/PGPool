@@ -10,6 +10,7 @@ import { MessageService } from 'primeng/api';
 })
 export class EmployeeComponent implements OnInit {
 
+  activate: boolean = false;
   employeeList: any = [];
   operationList:any = [];
   status:any;
@@ -39,6 +40,14 @@ export class EmployeeComponent implements OnInit {
         this.messageService.add({ severity: 'error', summary: 'ลบข้อมูลไม่สำเร็จ', detail: 'ข้อมูลที่พนักงานต้องการลบยังไม่ถูกลบ' });
       }
     })
+  }
+
+  onActivate() {
+    this.activate = true;
+  }
+
+  unActivate(unActivate: boolean) {
+    this.activate = unActivate;
   }
 
 

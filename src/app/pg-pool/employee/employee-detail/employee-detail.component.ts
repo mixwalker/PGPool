@@ -217,6 +217,10 @@ export class EmployeeDetailComponent implements OnInit {
         let rawEndDate = empOp['endDate'].split('T')
         let formatDate = rawEndDate[0].split('-')
         formatDate[1] = (+formatDate[1] + 1).toString().padStart(2, '0')
+        if (formatDate[1] > 12) {
+          formatDate[1] = (formatDate[1] = 1).toString().padStart(2, '0')
+          formatDate[0] = (+formatDate[0] + 1).toString().padStart(2, '0');
+        }
         let startDate = new Date(empOp['startDate']);
         let endDate = new Date(formatDate.join('-') + 'T' + rawEndDate[1]);
         for (let i = 0; i < this.mainChart.labels.length; i++) {

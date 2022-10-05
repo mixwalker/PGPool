@@ -1,9 +1,13 @@
 <div class="card">
-    <p-table [value]="projectList" responsiveLayout="scroll" selectionMode="single" [(selection)]="selectedProject" dataKey="projectCode" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="แสดงข้อมูล {first} ถึง {last} จาก {totalRecords} โครงการทั้งหมด">
+    <p-table #inputEL [value]="projectList" responsiveLayout="scroll" selectionMode="single" [globalFilterFields]="['projCode','projName','customerCode']" [(selection)]="selectedProject" dataKey="projectCode" [paginator]="true" [rows]="5" [showCurrentPageReport]="true"
+        currentPageReportTemplate="แสดงข้อมูล {first} ถึง {last} จาก {totalRecords} โครงการทั้งหมด">
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 โครงการ
-                <button pButton pRipple type="button" icon="pi pi-plus-circle" class="p-button-rounded p-button-success" (click)="onActivate()"></button>
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input type="text"  pInputText placeholder="กรุณากรอกชื่อพนักงาน" (input)="inputSearch(inputEL, $event)"/>
+                </span>
             </div>
         </ng-template>
         <ng-template pTemplate="header">
@@ -14,14 +18,16 @@
                 <th>วันที่เริ่มต้นโครงการ</th>
                 <th>วันที่สิ้นสุดโครงการ</th>
                 <th>สถานะโครงการ</th>
-                <th></th>
+                <th style="width: 15vh;text-align: center;">
+                    <button pButton pRipple type="button" icon="pi pi-plus-circle" label="เพิ่ม" style="width: 12.5vh;" class="p-button-rounded p-button-success" (click)="onActivate()"></button>
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-projectList>
             <tr>
-                <td (click)="getProjectById(projectList.projRef)">{{projectList.projCode}}</td>
-                <td (click)="getProjectById(projectList.projRef)">{{projectList.projName}}</td>
-                <td (click)="getProjectById(projectList.projRef)">{{projectList.customerCode}}</td>
+                <td (click)="getProjectById(projectList.projRef)" pColumn="projCode">{{projectList.projCode}}</td>
+                <td (click)="getProjectById(projectList.projRef)" pColumn="projName">{{projectList.projName}}</td>
+                <td (click)="getProjectById(projectList.projRef)" pColumn="customerCode">{{projectList.customerCode}}</td>
                 <td (click)="getProjectById(projectList.projRef)">{{projectList.projStartDate | formatDate}}</td>
                 <td (click)="getProjectById(projectList.projRef)">{{projectList.projEndDate | formatDate}}</td>
                 <td (click)="getProjectById(projectList.projRef)" *ngIf="projectList.status == 1">
@@ -53,4 +59,3 @@
     <app-import-excel (unBlock)="unActivate($event)"></app-import-excel>
 </div>
 <p-toast></p-toast>
-<!-- <button pButton pRipple type="button" class="p-button-rounded" icon="pi pi-search" style="margin-right: 1.5vh;" (click)="test()"></button> -->

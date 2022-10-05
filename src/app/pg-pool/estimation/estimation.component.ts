@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { Months } from 'src/app/model/months';
 import { PGpoolService } from 'src/app/service/pgpool.service';
 
@@ -11,26 +12,33 @@ import { PGpoolService } from 'src/app/service/pgpool.service';
 export class EstimationComponent implements OnInit {
 
   amountEmployees: any;
-  remaingEmployee: Number = 2;
   months: Months[];
   getMonthModel: any;
   getYearModel: any;
   years: any;
   projectList: any;
+  projectRequest: any[] = [];
   projectInProgress: any[] = [];
   operation: any;
   employeeList: any;
   employeeWorking: any[] = [];
   employeeFree: any[] = [];
-  employeeLeft: Number = 0;
+  employeeLeft: number = 0;
   employeeAlmostDone: any[] = [];
-  amountEmployeeWorking: Number = 0;
-  amountEmployeeAlmostDone: Number = 0;
-  amountEmployeeNeed: Number = 0;
+  amountEmployeeWorking: number = 0;
+  amountEmployeeAlmostDone: number = 0;
+  amountEmployeeNeed: number = 0;
+  amountEmployeeNeedPerMonth: number = 0;
+  countEmployee: number = 0;
+  approveProjObj: any = {};
+  approveProjectInProgress: any[] = [];
   canRun: boolean = false;
+  tempArr: any[] = [];
+  selectMonth: any;
+  selectYear: any;
 
 
-  constructor(private pgpoolservice: PGpoolService) {
+  constructor(private pgpoolservice: PGpoolService, private messageService: MessageService) {
     this.months = [
       { name: 'มกราคม', code: '01' },
       { name: 'กุมภาพันธ์', code: '02' },
@@ -52,54 +60,69 @@ export class EstimationComponent implements OnInit {
       this.amountEmployees = res;
     });
 
-    this.pgpoolservice.getAllProject().subscribe({
-      next: (res: any) => {
-        this.projectList = res;
-      }, complete: () => {
-      }
+    this.pgpoolservice.getAllProject().subscribe(res => {
+      this.projectList = res;
     });
 
-    this.pgpoolservice.getAllEmplyoee().subscribe({
-      next: (res: any) => {
-        this.employeeList = res;
-      }, complete: () => {
-      }
+    this.pgpoolservice.getAllEmplyoee().subscribe(res => {
+      this.employeeList = res;
     });
+
+    let today = new Date();
+    this.years = [
+      { year: (today.getFullYear() - 2) + 543 },
+      { year: (today.getFullYear() - 1) + 543 },
+      { year: today.getFullYear() + 543 },
+      { year: (today.getFullYear() + 1) + 543 },
+      { year: (today.getFullYear() + 2) + 543 },
+    ]
+
   }
 
   getMonthOnChange(event: any) {
     this.employeeWorking = [];
     this.employeeAlmostDone = [];
     this.getMonthModel = event['value']['code'];
-    this.getProjectInProgress();
-    const start = setInterval(() => {
-      if (this.canRun) {
-        this.getEmployeeFree();
-        clearInterval(start);
+    if (!this.getMonthModel || !this.getYearModel) return;
+    this.pgpoolservice.getApproveProjectByQuery(this.getMonthModel, this.getYearModel).subscribe({
+      next: (res: any) => {
+        this.approveProjObj = res
+      },
+      complete: () => {
+        this.getProjectInProgress();
+        this.getProjectRequest();
+        this.getApproveProjectInProgress();
+        const start = setInterval(() => {
+          if (this.canRun) {
+            this.getEmployeeFree();
+            clearInterval(start);
+          }
+        }, 1000);
       }
-    }, 1000);
-  }
-
-  createYear() {
-    let today = new Date();
-    this.years = [
-      { year: today.getFullYear() + 543 },
-      { year: (today.getFullYear() + 1) + 543 },
-      { year: (today.getFullYear() + 2) + 543 },
-    ]
+    });
   }
 
   getYearOnChange(event: any) {
     this.employeeWorking = [];
     this.employeeAlmostDone = [];
     this.getYearModel = event['value']['year'];
-    this.getProjectInProgress();
-    const start = setInterval(() => {
-      if (this.canRun) {
-        this.getEmployeeFree();
-        clearInterval(start);
+    if (!this.getMonthModel || !this.getYearModel) return;
+    this.pgpoolservice.getApproveProjectByQuery(this.getMonthModel, this.getYearModel).subscribe({
+      next: (res: any) => {
+        this.approveProjObj = res
+      },
+      complete: () => {
+        this.getProjectInProgress();
+        this.getProjectRequest();
+        this.getApproveProjectInProgress();
+        const start = setInterval(() => {
+          if (this.canRun) {
+            this.getEmployeeFree();
+            clearInterval(start);
+          }
+        }, 1000);
       }
-    }, 1000);
+    });
   }
 
   getProjectInProgress() {
@@ -111,18 +134,125 @@ export class EstimationComponent implements OnInit {
       let rawEndDate = project.projEndDate.split('T')
       let formatDate = rawEndDate[0].split('-')
       formatDate[1] = (+formatDate[1] + 1).toString().padStart(2, '0')
+      if (formatDate[1] > 12) {
+        formatDate[1] = (formatDate[1] = 1).toString().padStart(2, '0')
+        formatDate[0] = (+formatDate[0] + 1).toString().padStart(2, '0');
+      }
       let projectStartDate = new Date(project.projStartDate);
       let projectEndDate = new Date(formatDate.join('-') + 'T' + rawEndDate[1]);
-      if (today >= projectStartDate && today <= projectEndDate) {
+      if (today >= projectStartDate && today <= projectEndDate && project.status != 1 && project.status != 4) {
         this.projectInProgress.push({ ...project });
-        this.amountEmployeeNeed += project.amountPerson;
       }
+    }
+  }
+
+  async getProjectRequest() {
+    if (!this.getMonthModel || !this.getYearModel) return;
+    let tempProjectProgress = [...this.projectInProgress]
+    this.projectRequest = [];
+    this.amountEmployeeNeed = 0;
+    this.canRun = true;
+    if (this.approveProjObj.length > 0) {
+      for (let approve of this.approveProjObj) {
+        const index = tempProjectProgress.map(obj => obj.projRef.toString()).indexOf(approve['approveProjRef']);
+        if (index > -1) {
+          tempProjectProgress.splice(index, 1);
+        }
+      }
+      await this.countPersonAndPostProject(tempProjectProgress);
+    } else {
+      await this.countPersonAndPostProject(tempProjectProgress);
+    }
+  }
+
+  async countPersonAndPostProject(projectList: any) {
+    let today = new Date(+this.getYearModel - 543, this.getMonthModel, 0);
+    let run = false;
+    let tempEmpList = [...this.employeeList];
+    for (let project of projectList) {
+      let amount = 0;
+      let empNoArr: any[] = [];
+      this.pgpoolservice.getOpertationByProject(project['projRef']).subscribe({
+        next: (res: any) => {
+          this.operation = res;
+        }, complete: () => {
+          for (let op of this.operation) {
+            for (let empOp of op.employeeOperation) {
+              let rawEndDate = empOp.endDate.split('T')
+              let formatDate = rawEndDate[0].split('-')
+              formatDate[1] = (+formatDate[1] + 1).toString().padStart(2, '0')
+              if (formatDate[1] > 12) {
+                formatDate[1] = (formatDate[1] = 1).toString().padStart(2, '0')
+                formatDate[0] = (+formatDate[0] + 1).toString().padStart(2, '0');
+              }
+              let startDate = new Date(empOp.startDate);
+              let endDate = new Date(formatDate.join('-') + 'T' + rawEndDate[1]);
+              if (today >= startDate && today <= endDate) {
+                empNoArr.push(op.employee.empNo);
+                const index = tempEmpList.map(obj => obj.empNo).indexOf(op['employee']['empNo']);
+                if (index > -1) {
+                  tempEmpList.splice(index, 1);
+                }
+              }
+            }
+          }
+          let tempEmpNo;
+          for (let empNo of empNoArr) {
+            if (tempEmpNo != empNo) {
+              amount += 1;
+              run = true;
+            }
+            tempEmpNo = empNo;
+          }
+        }
+      });
+      const start = setInterval(() => {
+        if (run) {
+          project.personNeedPerMonth = amount
+          this.amountEmployeeNeedPerMonth = this.employeeList.length - tempEmpList.length
+          this.projectRequest.push({ ...project });
+          clearInterval(start);
+        }
+      }, 1000);
+    }
+
+  }
+
+  approveProject(projRef: any) {
+    let ApproveProject = {
+      approveProjRef: projRef,
+      approveMonth: this.getMonthModel,
+      approveYears: this.getYearModel,
+      approveStatus: true
+    }
+
+    this.pgpoolservice.addApproveProject(ApproveProject).subscribe({
+      complete: () => {
+        setTimeout(() => { window.location.reload(); }, 2000)
+        this.messageService.add({ severity: 'success', summary: 'อนุมัติสำเร็จ', detail: 'คำร้องขอพนักงานได้รับการอนุมัติแล้ว' });
+      }
+    })
+  }
+
+  getApproveProjectInProgress() {
+    if (!this.getMonthModel || !this.getYearModel) return;
+    this.approveProjectInProgress = [];
+    this.amountEmployeeNeed = 0;
+    for (let project of this.projectInProgress) {
+      for (let approve of this.approveProjObj) {
+        if (approve.approveProjRef == project.projRef) {
+          this.approveProjectInProgress.push({ ...project });
+        }
+      }
+      this.pgpoolservice.getOpertationByProject(project['projRef']).subscribe(res => {
+        this.operation = res;
+      });
     }
     this.getEmployeeWorking();
   }
 
   getEmployeeWorking() {
-    for (let project of this.projectInProgress) {
+    for (let project of this.approveProjectInProgress) {
       this.pgpoolservice.getOpertationByProject(project['projRef']).subscribe({
         next: (res: any) => {
           this.operation = res;
@@ -142,6 +272,10 @@ export class EstimationComponent implements OnInit {
         let rawEndDate = employeeWorkingData.endDate.split('T')
         let formatDate = rawEndDate[0].split('-')
         formatDate[1] = (+formatDate[1] + 1).toString().padStart(2, '0')
+        if (formatDate[1] > 12) {
+          formatDate[1] = (formatDate[1] = 1).toString().padStart(2, '0')
+          formatDate[0] = (+formatDate[0] + 1).toString().padStart(2, '0');
+        }
         let startDate = new Date(employeeWorkingData.startDate);
         let endDate = new Date(formatDate.join('-') + 'T' + rawEndDate[1]);
         if (today >= startDate && today <= endDate) {
@@ -149,11 +283,13 @@ export class EstimationComponent implements OnInit {
             empNo: operation['employee']['empNo'],
             Name: `${operation['employee']['firstName']} ${operation['employee']['lastName']}`,
             position: operation['employee']['position'],
-            project: operation['project']['projName'], employeeWorkingData
+            project: operation['project']['projName'],
+            employeeWorkingData
           });
         }
       }
     }
+
     if (tempEmployeeWorking.length > 0) {
       this.employeeWorking.push(tempEmployeeWorking);
       this.canRun = true;
@@ -175,14 +311,14 @@ export class EstimationComponent implements OnInit {
     }
     this.employeeLeft = this.employeeFree.length;
     this.amountEmployeeWorking = this.employeeList.length - +this.employeeLeft;
-
-  
+    this.amountEmployeeNeed = this.employeeList.length - +this.employeeLeft;
   }
 
   getEmployeeAlmostDone() {
     let thismonth = new Date(+this.getYearModel - 543, this.getMonthModel, 0);
     let thismonth1 = new Date(+this.getYearModel - 543, this.getMonthModel - 1, 1);
     let tempEmployeeAlmostDone = [];
+    this.amountEmployeeAlmostDone = 0;
     for (let operation of this.operation) {
       for (let employeeWorkingData of operation['employeeOperation']) {
         let endDate = new Date(employeeWorkingData.endDate);
@@ -198,18 +334,11 @@ export class EstimationComponent implements OnInit {
     }
     if (tempEmployeeAlmostDone.length > 0) {
       this.employeeAlmostDone.push(tempEmployeeAlmostDone);
+      tempEmployeeAlmostDone.map(obj => this.tempArr.push(obj.empNo))
       this.canRun = true;
     } else return;
-
-    let temp;
-    this.amountEmployeeAlmostDone = 0;
-    for (let employee of tempEmployeeAlmostDone) {
-      console.log(employee['empNo'])
-      if (employee['empNo'] != temp) {
-        this.amountEmployeeAlmostDone = +this.amountEmployeeAlmostDone + 1;
-        temp = employee['empNo'];
-      }
-    }
+    const setTemp = new Set(this.tempArr)
+    this.amountEmployeeAlmostDone = setTemp.size;
   }
 
 }

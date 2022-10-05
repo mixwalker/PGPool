@@ -43,6 +43,11 @@ import { EstimationComponent } from './pg-pool/estimation/estimation.component';
 import {FieldsetModule} from 'primeng/fieldset';
 import {RadioButtonModule} from 'primeng/radiobutton';
 import { LogInComponent } from './pg-pool/log-in/log-in/log-in.component';
+import { SendEmailComponent } from './pg-pool/project/send-email/send-email.component';
+import {InputTextareaModule} from 'primeng/inputtextarea';
+import { AddPersonComponent } from './pg-pool/project/add-person/add-person.component';
+import { AddOperationComponent } from './pg-pool/project/add-person/add-operation/add-operation.component';
+import { AddEmployeeComponent } from './pg-pool/employee/add-employee/add-employee.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +64,11 @@ import { LogInComponent } from './pg-pool/log-in/log-in/log-in.component';
     EditEmployeeComponent,
     EditEmployeeOperationComponent,
     EstimationComponent,
-    LogInComponent
+    LogInComponent,
+    SendEmailComponent,
+    AddPersonComponent,
+    AddOperationComponent,
+    AddEmployeeComponent
   ],
   imports: [
     BrowserModule,
@@ -88,7 +97,8 @@ import { LogInComponent } from './pg-pool/log-in/log-in/log-in.component';
     KnobModule,
     ProgressBarModule,
     FieldsetModule,
-    RadioButtonModule
+    RadioButtonModule,
+    InputTextareaModule
   ],
   providers: [MessageService],
   bootstrap: [AppComponent]

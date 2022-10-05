@@ -13,10 +13,12 @@
             <tr>
                 <th>รหัสพนักงาน</th>
                 <th>ชื่อ-สกุลพนักงาน</th>
-                <th style="width: 20vh;">ตำแหน่ง</th>
+                <th style="width: 45vh;">ตำแหน่ง</th>
                 <th style="width: 20vh;text-align: center;">แผนก</th>
                 <th style="width: 20vh;text-align: center;">สถานะการทำงาน</th>
-                <th></th>
+                <th style="width: 15vh;text-align: center;">
+                    <button pButton pRipple type="button" icon="pi pi-plus-circle" label="เพิ่ม" style="width: 12.5vh;" class="p-button-rounded p-button-success" (click)="onActivate()"></button>
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-employeeList>
@@ -26,10 +28,10 @@
                 <td (click)="getEmployeeById(employeeList.empNo)" pColumn="position" style="width: 20vh">{{employeeList.position}}</td>
                 <td (click)="getEmployeeById(employeeList.empNo)" pColumn="department" style="width: 20vh;text-align: center;">{{employeeList.department}}</td>
                 <td (click)="getEmployeeById(employeeList.empNo)" *ngIf="employeeList.progress !== null">
-                    <p-tag styleClass="mr-2" severity="warning" value="กำลังดำเนินงาน {{employeeList.progress}} %" [style]="{'width': '20vh','font-size': '15px','color':'white'}"></p-tag>
+                    <p-tag styleClass="mr-2" severity="warning" value="กำลังดำเนินงาน {{employeeList.progress}} %" [style]="{'width': '25vh','font-size': '15px','color':'white'}"></p-tag>
                 </td>
                 <td (click)="getEmployeeById(employeeList.empNo)" *ngIf="employeeList.progress === null">
-                    <p-tag p-tag styleClass="mr-2" severity="success" value="ว่าง" [style]="{'width': '20vh','font-size': '15px','color':'white'}"></p-tag>
+                    <p-tag p-tag styleClass="mr-2" severity="success" value="ว่าง" [style]="{'width': '25vh','font-size': '15px','color':'white'}"></p-tag>
                 </td>
                 <td>
                     <button (click)="getEmployeeById(employeeList.empNo)" pButton pRipple type="button" style="margin-right: 1.5vh;" icon="pi pi-search" class="p-button-rounded"></button>
@@ -43,5 +45,8 @@
             </div>
         </ng-template>
     </p-table>
+</div>
+<div *ngIf="activate">
+    <app-add-employee (unBlock)="unActivate($event)"></app-add-employee>
 </div>
 <p-toast></p-toast>

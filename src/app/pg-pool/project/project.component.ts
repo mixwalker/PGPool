@@ -31,6 +31,10 @@ export class ProjectComponent implements OnInit {
     this.router.navigate(['pg-pool/project/detail/', id]);
   }
 
+  inputSearch(inputEL: any, event: any) {
+    inputEL.filterGlobal(event.target.value, 'contains')
+  }
+
   onActivate() {
     this.activate = true;
   }
@@ -49,13 +53,4 @@ export class ProjectComponent implements OnInit {
       }
     })
   }
-
-  test(){
-    this.pgpoolservice.sendEmail({
-      to: "mixwalkerz1@gmail.com",
-      subject:"test วันจันทร์",
-      text:"halo"
-    }).subscribe();
-  }
-
 }

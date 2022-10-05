@@ -1,0 +1,29 @@
+<p-blockUI [blocked]="blockedImport">
+    <p-card header="ระบบ E-Mail สำหรับโครงการ" subheader="กรุณากรอกข้อความที่ต้องการส่ง" [style]="{width: '60vh'}" styleClass="p-card-shadow">
+        <div>
+            <div class="field">
+                <label for="ProjectName" class="block"> ชื่อโครงการ</label>
+                <input type="text" pInputText [style]="{width: '100%'}" placeholder="{{opList[0].project.projName}}" disabled>
+            </div>
+            <div class="field">
+                <label for="receiver" class="block">ถึง</label>
+                <p-dropdown [options]="receiver" placeholder="กรุณาเลือกผู้รับ" optionLabel="name" [showClear]="true" [style]="{width: '100%'}" [(ngModel)]="selectReceiver"></p-dropdown>
+            </div>
+            <div class=" field ">
+                <label for="header " class="block ">เรื่อง</label>
+                <input type="text " pInputText [style]="{width: '100%'}" [(ngModel)]="subject">
+            </div>
+            <div class="field ">
+                <label for="message " class="block ">ข้อความ</label>
+                <textarea rows="5" cols="30" pInputTextarea [style]="{width: '100%'}" [(ngModel)]="text"></textarea>
+            </div>
+        </div>
+        <ng-template pTemplate="footer ">
+            <div style="text-align: center;padding: 2vh; ">
+                <button pButton pRipple type="button " label="ยืนยัน " class="p-button-success " style="margin-right:2vh " (click)="sendEmail()"></button>
+                <button pButton pRipple type="button " label="ยกเลิก " class="p-button-danger " (click)="closeImport() "></button>
+            </div>
+        </ng-template>
+    </p-card>
+</p-blockUI>
+<p-toast></p-toast>

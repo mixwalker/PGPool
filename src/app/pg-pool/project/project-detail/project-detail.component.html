@@ -3,7 +3,8 @@
         <ng-template pTemplate="caption">
             <div class="flex align-items-center justify-content-between">
                 รายละเอียดโครงการ
-                <button pButton pRipple type="button" class="p-button-rounded  p-button-warning" icon="pi pi-pencil" style="margin-left: 140vh;color: white;" (click)="onActivate()"></button>
+                <button pButton pRipple type="button" class="p-button-rounded  p-button-warning" icon="pi pi-pencil" style="margin-left: 134vh;color: white;" (click)="onActivate()"></button>
+                <button pButton pRipple type="button" class="p-button-rounded p-button-help" icon="pi pi-envelope" (click)="onActivateEmail()"></button>
                 <button pButton pRipple type="button" class="p-button-rounded" icon="pi pi-home" (click)="goProjectPage()"></button>
             </div>
             <label for="projectCode" class="block">รหัสโครงการ: {{projectList.projCode}}</label>
@@ -22,22 +23,24 @@
                     <p-chart type="line" [data]="mainChart" width="150vh" height="50vh" [options]="mainChartOptions"></p-chart>
                 </div>
                 <br>
-
             </div>
             <br>
-            <label class="block">บุคลากรที่รับผิดชอบ </label>
+            <label class="block">บุคลากรที่รับผิดชอบ</label>
         </ng-template>
     </p-table>
 
     <p-table [value]="table" *ngIf="cantLoadEmp" dataKey="employee.empNo" responsiveLayout="scroll" [rowHover]="true" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="แสดงข้อมูลพนักงาน {first} ถึง {last} จาก {totalRecords} คน">
         <ng-template pTemplate="header">
             <tr>
-                <th></th>
+                <th>
+                    <button pButton pRipple type="button" class="p-button-rounded p-button-success" icon="pi pi-user-plus" (click)="onActivateAddPerson()"></button>
+                </th>
                 <th>รหัสพนักงาน</th>
                 <th>ชื่อ-สกุลพนักงาน</th>
                 <th>ตำแหน่ง</th>
                 <th>แผนก</th>
-                <th></th>
+                <th>
+                </th>
             </tr>
         </ng-template>
         <ng-template pTemplate="body" let-employeeList let-expanded="expanded">
@@ -83,7 +86,7 @@
                                         <p-sortIcon field="empAssigned"></p-sortIcon>
                                     </th>
                                     <th>
-
+                                        <button pButton pRipple type="button" icon="pi pi-plus" label="เพิ่ม" style="width: 12.5vh;" class="p-button-rounded p-button-success" (click)="onActivateAddOperation(operation)"></button>
                                     </th>
                                 </tr>
                             </ng-template>
@@ -96,7 +99,7 @@
                                     <td>{{employeeOperation.empAssigned}}</td>
                                     <td>
                                         <button pButton pRipple type="button" class="p-button-rounded  p-button-warning" icon="pi pi-pencil" style="margin-right: 1.5vh;color: white;" (click)="onActivateEmpOp(employeeOperation)"></button>
-                                        <button pButton pRipple type="button" class="p-button-danger p-button-rounded" icon="pi pi-trash"></button>
+                                        <button pButton pRipple type="button" class="p-button-danger p-button-rounded" icon="pi pi-trash" (click)="deleteEmpOp(employeeOperation.empOpId)"></button>
                                     </td>
                                 </tr>
                             </ng-template>
@@ -128,5 +131,14 @@
 </div>
 <div *ngIf="activateEmpOp">
     <app-edit-employee-operation (unBlock)="unActivateEmpOp($event)" [empOpList]="getEmpOp"></app-edit-employee-operation>
+</div>
+<div *ngIf="activateEmail">
+    <app-send-email (unBlock)="unActivateEmail($event)" [opList]="table"></app-send-email>
+</div>
+<div *ngIf="activateAddPerson">
+    <app-add-person (unBlock)="unActivateAddPerson($event)" [opList]="table"></app-add-person>
+</div>
+<div *ngIf="activateAddOperation">
+    <app-add-operation (unBlock)="unActivateAddOperation($event)" [opId]="getOpId"></app-add-operation>
 </div>
 <p-toast></p-toast>

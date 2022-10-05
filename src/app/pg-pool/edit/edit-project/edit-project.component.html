@@ -26,10 +26,6 @@
                 <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="project.customerCode">
             </div>
             <div class="field">
-                <label for="limitPerson" class="block">พนักงานที่ต้องการ</label>
-                <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="project.limitPerson">
-            </div>
-            <div class="field">
                 <label for="startDate" class="block">วันที่เริ่มต้นโครงการ</label>
                 <p-calendar [showIcon]="true" inputId="icon" [style]="{width: '100%'}" dateFormat="dd/mm/yy" [(ngModel)]="project.projStartDate" appendTo="body"></p-calendar>
             </div>
@@ -49,12 +45,6 @@
                     <p-radioButton name="status" value="2" [(ngModel)]="project.status" inputId="status2"></p-radioButton>
                     <label for="status2">
                         <p-tag styleClass="mr-2" severity="warning" value="กำลังดำเนินการ" [style]="{'width': '20vh','font-size': '15px','color': 'white'}"></p-tag>
-                    </label>
-                </div>
-                <div class="field-radiobutton">
-                    <p-radioButton name="city" value="3" [(ngModel)]="project.status" inputId="status3"></p-radioButton>
-                    <label for="status3">
-                        <p-tag severity="danger" value="เกินกำหนด" [style]="{'width': '20vh','font-size': '15px'}"></p-tag>
                     </label>
                 </div>
                 <div class="field-radiobutton">

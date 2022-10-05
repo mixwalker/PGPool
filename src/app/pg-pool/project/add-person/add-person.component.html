@@ -1,0 +1,52 @@
+<p-blockUI [blocked]="blockedImport">
+    <p-card header="เพิ่มพนักงานสำหรับ{{opList[0].project.projName}}" subheader="กรุณากรอกเลือกพนักงานที่ต้องการเพิ่ม" [style]="{width: '150vh'}" styleClass="p-card-shadow">
+        <p-scrollPanel [style]="{width: '100%', height: '28.5rem'}" styleClass="custombar1">
+            <div class="card" style="height: 10vh;">
+                <p-table [value]="employeeList" #inputEL responsiveLayout="scroll" selectionMode="single" [globalFilterFields]="['empNo','firstName','lastName','position','department']" [paginator]="true" [rows]="5" [showCurrentPageReport]="true" currentPageReportTemplate="แสดงข้อมูลพนักงาน {first} ถึง {last} จาก {totalRecords} คน">
+                    <ng-template pTemplate="caption">
+                        <div class="flex align-items-center justify-content-between">
+                            พนักงาน
+                            <span class="p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input type="text"  pInputText placeholder="กรุณากรอกชื่อพนักงาน" (input)="inputSearch(inputEL, $event)"/>
+                        </span>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>รหัสพนักงาน</th>
+                            <th>ชื่อ-สกุลพนักงาน</th>
+                            <th style="width: 20vh;">ตำแหน่ง</th>
+                            <th style="width: 20vh;text-align: center;">แผนก</th>
+                            <th></th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-employeeList>
+                        <tr>
+                            <td (click)="onActivateAddOperation(employeeList)" pColumn="empNo">{{employeeList.empNo}}</td>
+                            <td (click)="onActivateAddOperation(employeeList)" pColumn="firstName">{{employeeList.firstName + " " + employeeList.lastName}}</td>
+                            <td (click)="onActivateAddOperation(employeeList)" pColumn="position" style="width: 20vh">{{employeeList.position}}</td>
+                            <td (click)="onActivateAddOperation(employeeList)" pColumn="department" style="width: 20vh;text-align: center;"> {{employeeList.department}}</td>
+                            <td>
+                                <button pButton pRipple type="button" icon="pi pi-plus" class="p-button-rounded p-button-success" (click)="onActivateAddOperation(employeeList)"></button>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="summary">
+                        <div class="flex align-items-center justify-content-between">
+                            จำนวนพนักงานทั้งหมด {{employeeList ? employeeList.length : 0 }} คน
+                        </div>
+                    </ng-template>
+                </p-table>
+            </div>
+        </p-scrollPanel>
+        <ng-template pTemplate="footer ">
+            <div style="text-align: center;padding: 2vh; ">
+                <button pButton pRipple type="button" label="ปิด " class="p-button-danger" (click)="closeImport()" style="width: 30vh;"></button>
+            </div>
+        </ng-template>
+    </p-card>
+</p-blockUI>
+<div *ngIf="activateAddOperation">
+    <app-add-operation (unBlock)="unActivateAddOperation($event)" [empNo]="employee.empNo" [projRef]="opList[0].project.projRef" [mode]="1"></app-add-operation>
+</div>

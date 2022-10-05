@@ -1,19 +1,5 @@
 {
   "0 debug pnpm:scope": {
     "selected": 1
-  },
-  "1 error pnpm": {
-    "errno": 3221225786,
-    "code": "ELIFECYCLE",
-    "pkgid": "pg-pool-ui@0.0.0",
-    "stage": "start",
-    "script": "ng serve -o --proxy-config proxy.conf.json",
-    "pkgname": "pg-pool-ui",
-    "err": {
-      "name": "Error",
-      "message": "pg-pool-ui@0.0.0 start: `ng serve -o --proxy-config proxy.conf.json`\nExit status 3221225786",
-      "code": "ELIFECYCLE",
-      "stack": "Error: pg-pool-ui@0.0.0 start: `ng serve -o --proxy-config proxy.conf.json`\nExit status 3221225786\n    at EventEmitter.<anonymous> (C:\\Users\\mixbo\\.node\\corepack\\pnpm\\6.11.0\\dist\\pnpm.cjs:104774:20)\n    at EventEmitter.emit (node:events:527:28)\n    at ChildProcess.<anonymous> (C:\\Users\\mixbo\\.node\\corepack\\pnpm\\6.11.0\\dist\\pnpm.cjs:93080:18)\n    at ChildProcess.emit (node:events:527:28)\n    at maybeClose (node:internal/child_process:1092:16)\n    at Process.ChildProcess._handle.onexit (node:internal/child_process:302:5)"
-    }
   }
 }

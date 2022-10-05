@@ -204,7 +204,7 @@ export class ImportExcelComponent implements OnInit {
           this.employee.forEach(item => {
             this.pgpoolservice.addEmployee(item).subscribe();
           });
-
+          
           this.operation.forEach((item, index) => {
             this.pgpoolservice.addOperation(item).subscribe((res: any) => {
               for (let empOp of this.employee[index].employeeOperation) {

@@ -30,11 +30,15 @@ export class ProjectDetailComponent implements OnInit {
   subChartOptions: any;
   mainChart: any;
   activate: boolean = false;
-  activateEmpOp:boolean =false;
-  amountPerson!:number;
-  getEmpOp:any = {};
+  activateEmpOp: boolean = false;
+  activateEmail: boolean = false;
+  activateAddPerson: boolean = false;
+  activateAddOperation: boolean = false;
+  amountPerson!: number;
+  getOpId: any;
+  getEmpOp: any = {};
 
-  borderColor= [
+  borderColor = [
     '#FFA726',
     '#42A5F5',
     '#66BB6A',
@@ -45,7 +49,7 @@ export class ProjectDetailComponent implements OnInit {
     '#241E4E',
     '#960200',
     '#42E2B8'
-  ] 
+  ]
 
   backgroundCodeColor = [
     'rgba(255,167,38,0.2)',
@@ -201,7 +205,7 @@ export class ProjectDetailComponent implements OnInit {
       datasets: [],
     };
 
-    for (let [i,emp] of this.table.entries()) {
+    for (let [i, emp] of this.table.entries()) {
       let name = emp.employee.firstName + " " + emp.employee.lastName;
       let datasets: any = {
         label: name,
@@ -213,9 +217,13 @@ export class ProjectDetailComponent implements OnInit {
       let sumArr = [];
       for (let empOp of emp.employeeOperation) {
         let workingArr = [];
-        let rawEndDate = empOp['endDate'].split('T')
-        let formatDate = rawEndDate[0].split('-')
-        formatDate[1] = (+formatDate[1] + 1).toString().padStart(2, '0')
+        let rawEndDate = empOp['endDate'].split('T');
+        let formatDate = rawEndDate[0].split('-');
+        formatDate[1] = (+formatDate[1] + 1).toString().padStart(2, '0');
+        if (formatDate[1] > 12) {
+          formatDate[1] = (formatDate[1] = 1).toString().padStart(2, '0');
+          formatDate[0] = (+formatDate[0] + 1).toString().padStart(2, '0');
+        }
         let startDate = new Date(empOp['startDate']);
         let endDate = new Date(formatDate.join('-') + 'T' + rawEndDate[1]);
         for (let i = 0; i < this.mainChart.labels.length; i++) {
@@ -285,10 +293,10 @@ export class ProjectDetailComponent implements OnInit {
       let rawEndDate = new Date(emp['endDate']);
       let startDate = new Date(emp['startDate']);
       let endDate = new Date(emp['endDate']);
-      labelDate = `${rawStartDate.getDate()} ${monthLabel[+rawStartDate.getMonth()+1]} ${+rawStartDate.getFullYear()+543} - ${rawEndDate.getDate()} ${monthLabel[+rawEndDate.getMonth()+1]} ${+rawEndDate.getFullYear() + 543}`
+      labelDate = `${rawStartDate.getDate()} ${monthLabel[+rawStartDate.getMonth() + 1]} ${+rawStartDate.getFullYear() + 543} - ${rawEndDate.getDate()} ${monthLabel[+rawEndDate.getMonth() + 1]} ${+rawEndDate.getFullYear() + 543}`
       datasets.label = labelDate;
       for (let i = 1; i <= daysofMonth; i++) {
-        let today = new Date(`${monthNum}/${i}/${+year-543}`);
+        let today = new Date(`${monthNum}/${i}/${+year - 543}`);
         if (today >= startDate && today <= endDate) {
           datasets.data.push(emp.empWorking);
         } else {
@@ -305,6 +313,17 @@ export class ProjectDetailComponent implements OnInit {
 
   deleteItem(projRef: Number, empNo: string) {
     this.pgpoolservice.deleteOperation(projRef, empNo).subscribe({
+      complete: () => {
+        this.messageService.add({ severity: 'success', summary: 'ลบข้อมูลสำเร็จ', detail: 'ข้อมูลที่ต้องการลบถูกลบแล้ว' });
+        setTimeout(() => { window.location.reload(); }, 2000)
+      }, error: () => {
+        this.messageService.add({ severity: 'error', summary: 'ลบข้อมูลไม่สำเร็จ', detail: 'ข้อมูลที่ต้องการลบยังไม่ถูกลบ' });
+      }
+    })
+  }
+
+  deleteEmpOp(empOpId: Number) {
+    this.pgpoolservice.deleteEmpOp(empOpId).subscribe({
       complete: () => {
         this.messageService.add({ severity: 'success', summary: 'ลบข้อมูลสำเร็จ', detail: 'ข้อมูลที่ต้องการลบถูกลบแล้ว' });
         setTimeout(() => { window.location.reload(); }, 2000)
@@ -344,7 +363,7 @@ export class ProjectDetailComponent implements OnInit {
     this.activate = unActivate;
   }
 
-  onActivateEmpOp(empOp:any) {
+  onActivateEmpOp(empOp: any) {
     this.activateEmpOp = true;
     this.getEmpOp = empOp;
   }
@@ -352,5 +371,31 @@ export class ProjectDetailComponent implements OnInit {
   unActivateEmpOp(unActivate: boolean) {
     this.activateEmpOp = unActivate;
   }
+
+  onActivateEmail() {
+    this.activateEmail = true;
+  }
+
+  unActivateEmail(unActivate: boolean) {
+    this.activateEmail = unActivate;
+  }
+
+  onActivateAddPerson() {
+    this.activateAddPerson = true;
+  }
+
+  unActivateAddPerson(unActivate: boolean) {
+    this.activateAddPerson = unActivate;
+  }
+
+  onActivateAddOperation(operation: any) {
+    this.activateAddOperation = true;
+    this.getOpId = operation.opId;
+  }
+
+  unActivateAddOperation(unActivate: boolean) {
+    this.activateAddOperation = unActivate;
+  }
+
 
 }

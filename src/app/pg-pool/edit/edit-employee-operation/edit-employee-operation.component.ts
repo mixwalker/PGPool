@@ -18,7 +18,6 @@ export class EditEmployeeOperationComponent implements OnInit {
 
   ngOnInit(): void {
     this.empOp = {...this.empOpList};
-    console.log(this.empOp)
     this.empOp['startDate'] = new Date(this.empOp['startDate']);
     this.empOp['endDate'] = new Date(this.empOp['endDate']);
   }

@@ -1,0 +1,31 @@
+<p-blockUI [blocked]="blockedImport">
+    <p-card header="เพิ่มข้อมูลการทำงานของพนักงาน" subheader="กรุณากรอกข้อมูลที่ต้องเพิ่ม" [style]="{width: '60vh'}" styleClass="p-card-shadow">
+        <div class="field">
+            <label for="startDate" class="block">วันที่เริ่มต้นโครงการ</label>
+            <p-calendar [showIcon]="true" inputId="icon" [style]="{width: '100%'}" dateFormat="dd/mm/yy" [(ngModel)]="employeeOperation.startDate" placeholder="กรุณาเลือกวันที่เริ่มต้น"></p-calendar>
+        </div>
+        <div class="field">
+            <label for="endDate" class="block">วันที่สิ้นสุดโครงการ</label>
+            <p-calendar [showIcon]="true" inputId="icon" [style]="{width: '100%'}" dateFormat="dd/mm/yy" [(ngModel)]="employeeOperation.endDate" placeholder="กรุณาเลือกวันที่สิ้นสุด"></p-calendar>
+        </div>
+        <div class="field">
+            <label for="duration" class="block">Duration</label>
+            <input type="number" pInputText [style]="{width: '100%'}" [(ngModel)]="employeeOperation.empDuration" placeholder="กรุณากรอกค่า Duration">
+        </div>
+        <div class="field">
+            <label for="working" class="block">Working %</label>
+            <input type="number" pInputText [style]="{width: '100%'}" [(ngModel)]="employeeOperation.empWorking" placeholder="กรุณากรอกค่า Working">
+        </div>
+        <div class="field">
+            <label for="assigned" class="block">Assigned MM</label>
+            <input type="number" pInputText [style]="{width: '100%'}" [(ngModel)]="employeeOperation.empAssigned" placeholder="กรุณากรอกค่า Assigned">
+        </div>
+        <ng-template pTemplate="footer">
+            <div style="text-align: center;padding: 2vh;">
+                <button pButton pRipple type="button" label="ยืนยัน" class="p-button-success" style="margin-right:2vh" (click)="addOperation()"></button>
+                <button pButton pRipple type="button" label="ยกเลิก" class="p-button-danger" (click)="closeImport()"></button>
+            </div>
+        </ng-template>
+    </p-card>
+</p-blockUI>
+<p-toast></p-toast>

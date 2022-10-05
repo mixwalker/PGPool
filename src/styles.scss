@@ -57,6 +57,11 @@ body {
     }
 }
 
+.p-inputtext,
+.p-inputtext::placeholder {
+    font-family: prompt;
+}
+
 .p-dropdown .p-dropdown-label {
     font-family: prompt;
 }

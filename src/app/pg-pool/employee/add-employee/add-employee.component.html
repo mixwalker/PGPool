@@ -1,0 +1,39 @@
+<p-blockUI [blocked]="blockedImport">
+    <p-card header="เพิ่มข้อมูลพนักงาน" subheader="กรุณากรอกข้อมูลที่ต้องการเพิ่ม" [style]="{width: '50vh'}" styleClass="p-card-shadow">
+        <p-scrollPanel [style]="{width: '100%', height: '28.5rem'}" styleClass="custombar1">
+            <div>
+                <div class="field">
+                    <label for="empNo" class="block"> รหัสพนักงาน</label>
+                    <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="employee.empNo" placeholder="กรุณากรอกรหัสพนักงาน">
+                </div>
+                <div class="field">
+                    <label for="firstName" class="block">ชื่อพนักงาน</label>
+                    <input type="text" pInputText [style]="{width: '100%'}" [(ngModel)]="employee.firstName" placeholder="กรุณากรอกชื่อ">
+                </div>
+                <div class=" field ">
+                    <label for="lastName " class="block ">นามสกุล</label>
+                    <input type="text " pInputText [style]="{width: '100%'}" [(ngModel)]="employee.lastName" placeholder="กรุณากรอกนามสกุล">
+                </div>
+                <div class="field ">
+                    <label for="position" class="block">ตำแหน่งงาน</label>
+                    <p-dropdown [options]="position" placeholder="กรุณาเลือกตำแหน่งงาน" optionLabel="name" [showClear]="true" [style]="{width: '100%'}" [(ngModel)]="employee.position"></p-dropdown>
+                </div>
+                <div class="field ">
+                    <label for="department" class="block">แผนก</label>
+                    <p-dropdown [options]="department" placeholder="กรุณาเลือกแผนก" optionLabel="name" [showClear]="true" [style]="{width: '100%'}" [(ngModel)]="employee.department"></p-dropdown>
+                </div>
+                <div class="field ">
+                    <label for="email " class="block ">E-Mail</label>
+                    <input type="email " pInputText [style]="{width: '100%'}" [(ngModel)]="employee.email" placeholder="กรุณากรอกอีเมลล์">
+                </div>
+            </div>
+        </p-scrollPanel>
+        <ng-template pTemplate="footer ">
+            <div style="text-align: center;padding: 2vh; ">
+                <button pButton pRipple type="button " label="ยืนยัน " class="p-button-success " style="margin-right:2vh " (click)="addEmployee()"></button>
+                <button pButton pRipple type="button " label="ยกเลิก " class="p-button-danger " (click)="closeImport() "></button>
+            </div>
+        </ng-template>
+    </p-card>
+</p-blockUI>
+<p-toast></p-toast>

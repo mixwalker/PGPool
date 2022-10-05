@@ -1,17 +1,17 @@
 <div class="displays">
-    <p-card header="การประมาณการการทำงานของพนักงาน" [style]="{'width': '89rem','height': '9rem'}">
+    <p-card header="การประมาณการการทำงานของพนักงาน" [style]="{'width': '80rem','height': '9rem'}">
         <div style="font-size: x-large;">
             ประจำเดือน
             <p-dropdown [options]="months" optionLabel="name" [style]="{'width':'25vh'}" (onChange)="getMonthOnChange($event)" placeholder="กรุณาเลือกเดือน"></p-dropdown> ปี พ.ศ.
-            <p-dropdown [options]="years" optionLabel="year" [style]="{'width':'25vh'}" (onClick)="createYear()" (onChange)="getYearOnChange($event)" placeholder="กรุณาเลือกปี"></p-dropdown>
+            <p-dropdown [options]="years" optionLabel="year" [style]="{'width':'25vh'}" (onChange)="getYearOnChange($event)" placeholder="กรุณาเลือกปี"></p-dropdown>
         </div>
     </p-card>
 </div>
 <div class="displays">
     <div class="grid" style="margin-top: 2rem;">
-        <div class="grid-item">
-            <p-card header="พนักงานคงเหลือ" [style]="{'width': '15rem', 'margin-bottom': '2em', 'height': '15rem'}">
-                <div style="margin-left: 6.6vh;">
+        <div>
+            <p-card header="พนักงานคงเหลือ" [style]="{'width': '15rem', 'margin-bottom': '2em', 'height': '20rem'}">
+                <div style="margin-left: 8vh;margin-top: 5vh;">
                     <p-knob [(ngModel)]="employeeLeft" [min]="0" [max]="amountEmployees.amountEmployees" [readonly]="true"></p-knob>
                     <div style="margin-left: 1.25vh;">
                         <p-tag styleClass="mr-2" icon="pi pi-user" [style]="{'width': '5rem'}" value="{{employeeLeft}}/{{amountEmployees.amountEmployees}} คน"></p-tag>
@@ -19,27 +19,41 @@
                 </div>
             </p-card>
         </div>
-        <div class="grid-item">
-            <p-card header="โครงการที่กำลังดำเนินการ" [style]="{'width': '35rem', 'height': '15rem'}">
-                <p-scrollPanel [style]="{width: '100%', height: '9rem'}" styleClass="custombar1">
+        <div>
+            <p-card header="โครงการที่กำลังดำเนินการ" [style]="{'width': '62.6rem', 'height': '20rem'}">
+                <p-scrollPanel [style]="{width: '100%', height: '15rem'}" styleClass="custombar1">
                     <div style="font-size: 20px;">
-                        <div class="card" *ngFor="let project of projectInProgress">
-                            <p-tag styleClass="mr-2" [style]="{'width': '100%','font-size': '24px'}" value="{{project.projName}}"><i class="pi pi-briefcase" style="margin-right: 1vh;"></i></p-tag>
-                            <br> วันที่เริ่มต้นโครงการ : {{project.projStartDate | formatDate}}
-                            <br> วันที่สิ้นสุดโครงการ : {{project.projEndDate | formatDate}}
-                        </div>
-                    </div>
-                </p-scrollPanel>
-            </p-card>
-        </div>
-        <div class="grid-item">
-            <p-card header="โครงการที่จะเริ่มต้นภายในเดือนนี้" [style]="{'width': '35rem', 'height': '15rem'}">
-                <p-scrollPanel [style]="{width: '100%', height: '9rem'}" styleClass="custombar1">
-                    <div style="font-size: 20px;">
-                        <div class="card" *ngFor="let project of projectInProgress">
-                            <p-tag styleClass="mr-2" [style]="{'width': '100%','font-size': '24px'}" value="{{project.projName}}"><i class="pi pi-briefcase" style="margin-right: 1vh;"></i></p-tag>
-                            <br> วันที่เริ่มต้นโครงการ : {{project.projStartDate | formatDate}}
-                            <br> วันที่สิ้นสุดโครงการ : {{project.projEndDate | formatDate}}
+                        <div *ngFor="let project of projectInProgress" style="margin-bottom: 2rem;">
+                            <p-fieldset legend="{{project.projName}}">
+                                <div class="displays ">
+                                    <div class="grid">
+                                        <div>
+                                            <div class="card " style="padding: 0.5vh;width: 25vh;">
+                                                <p-tag styleClass="mr-2" [style]="{ 'width': '100%', 'font-size': '18px'} " value="รหัสโครงการ"></p-tag>
+                                                <div style="text-align: center; "><br>{{project.projCode}}</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="card " style="padding: 0.5vh;width: 25vh;">
+                                                <p-tag styleClass="mr-2" [style]="{ 'width': '100%', 'font-size': '18px'} " value="รหัสลูกค้า"></p-tag>
+                                                <div style="text-align: center; "><br>{{project.customerCode}}</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="card " style="padding: 0.5vh;width: 25vh;">
+                                                <p-tag styleClass="mr-2" severity="success" [style]="{ 'width': '100%', 'font-size': '18px'} " value="วันที่เริ่มต้น"></p-tag>
+                                                <div style="text-align: center; "><br>{{project.projStartDate | formatDate}}</div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="card " style="padding: 0.5vh;width: 25vh;">
+                                                <p-tag styleClass="mr-2" severity="danger" [style]="{ 'width': '100%', 'font-size': '18px'} " value="สิ้นสุดวันที่"></p-tag>
+                                                <div style="text-align: center; "><br>{{project.projEndDate | formatDate}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p-fieldset>
                         </div>
                     </div>
                 </p-scrollPanel>
@@ -49,68 +63,72 @@
 </div>
 
 <div class="displays">
-    <p-card header="คำร้องขอพนักงาน & พนักงานที่จะสิ้นสุดปฏิบัติการ" [style]="{'width': '89rem','margin-bottom': '2em','height': '45rem'}">
+    <p-card header="คำร้องขอพนักงาน & พนักงานที่จะสิ้นสุดปฏิบัติการ" [style]="{'width': '80rem','margin-bottom': '2rem','height': '45rem'}">
         <div class="displays">
             <div class="grid">
-                <div class="grid-item">
-                    <p-card header="คำร้องขอพนักงานสำหรับเดือนนี้" [style]="{'width': '42rem', 'margin-bottom': '2em', 'height': '38rem'}">
+                <div>
+                    <p-card header="คำร้องขอพนักงานสำหรับเดือนนี้" [style]="{'width': '37rem', 'margin-bottom': '2rem', 'height': '38rem'}">
                         <div style="padding-bottom: 1vh;">
-                            <p-tag styleClass="mr-2" value="ต้องการพนักงานสำหรับปฏิบัติงานทั้งหมด {{amountEmployeeNeed}} คน" severity="warning" [style]="{'width': '45vh','font-size': '15px','margin-left':'35vh'}"></p-tag>
+                            <p-tag styleClass="mr-2" value="ต้องการพนักงานสำหรับปฏิบัติงานทั้งหมด {{amountEmployeeNeedPerMonth}} คน" severity="warning" [style]="{'width': '45vh','font-size': '15px','margin-left':'37.5vh'}"></p-tag>
                         </div>
-                        <p-scrollPanel [style]="{width: '100%', height: '35rem'}">
-                            <div class="card" *ngFor="let project of projectInProgress">
-                                <p-tag styleClass="mr-2" [style]="{'width': '100%','font-size': '24px'}" value="{{project.projName}}"><i class="pi pi-briefcase" style="margin-right: 1vh;"></i></p-tag>
-                                <div class="displays ">
-                                    <div class="grid ">
-                                        <div class="grid-item">
-                                            <div class="card" style="padding: 0.5vh;width: 27vh;">
-                                                <p-tag styleClass="mr-2" [style]="{ 'width': '100%', 'font-size': '18px'} " value="จำนวนพนักงานที่ต้องการ"></p-tag>
-                                                <div style="text-align: center;"><br>{{project.amountPerson}} คน</div>
+                        <p-scrollPanel [style]="{width: '100%', height: '28.5rem'}">
+                            <div *ngFor="let project of projectRequest" style="margin-bottom: 2rem;">
+                                <p-fieldset legend="{{project.projName}}">
+                                    <div class="displays ">
+                                        <div class="grid ">
+                                            <div>
+                                                <div class="card" style="padding: 0.5vh;width: 24vh;">
+                                                    <p-tag styleClass="mr-2" [style]="{ 'width': '100%', 'font-size': '18px'} " value="พนักงานที่ต้องการ"></p-tag>
+                                                    <div style="text-align: center;"><br>{{project.personNeedPerMonth}} คน</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="grid-item">
-                                            <div class="card " style="padding: 0.5vh;width: 19vh; ">
-                                                <p-tag styleClass="mr-2" severity="success" [style]="{ 'width': '100%', 'font-size': '18px'} " value="วันที่เริ่มต้น"></p-tag>
-                                                <div style="text-align: center; "><br>{{project.projStartDate | formatDate}}</div>
+                                            <div>
+                                                <div class="card " style="padding: 0.5vh">
+                                                    <p-tag styleClass="mr-2" severity="success" [style]="{ 'width': '100%', 'font-size': '18px'} " value="วันที่เริ่มต้น"></p-tag>
+                                                    <div style="text-align: center; "><br>{{project.projStartDate | formatDate}}</div>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="grid-item">
-                                            <div class="card " style="padding: 0.5vh;width: 19vh;">
-                                                <p-tag styleClass="mr-2" severity="danger" [style]="{ 'width': '100%', 'font-size': '18px'} " value="สิ้นสุดวันที่"></p-tag>
-                                                <div style="text-align: center; "><br>{{project.projEndDate | formatDate}}</div>
+                                            <div>
+                                                <div class="card " style="padding: 0.5vh">
+                                                    <p-tag styleClass="mr-2" severity="danger" [style]="{ 'width': '100%', 'font-size': '18px'} " value="สิ้นสุดวันที่"></p-tag>
+                                                    <div style="text-align: center; "><br>{{project.projEndDate | formatDate}}</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div style="padding: 1rem;">
+                                        <button pButton pRipple type="button" icon="pi pi-check" label="อนุมัติคำร้องขอ" [style]="{ 'width': '100%', 'font-size': '18px'} " class="p-button-success" (click)="approveProject(project.projRef)"></button>
+                                    </div>
+                                </p-fieldset>
                             </div>
                         </p-scrollPanel>
                     </p-card>
                 </div>
-                <div class="grid-item">
-                    <p-card header="พนักงานที่จะสิ้นสุดปฏิบัติการในเดือนนี้" [style]="{'width': '42rem', 'margin-bottom': '2em', 'height': '38rem'}">
+                <div>
+                    <p-card header="พนักงานที่จะสิ้นสุดปฏิบัติการในเดือนนี้" [style]="{'width': '37rem', 'margin-bottom': '2em', 'height': '38rem'}">
                         <div style="padding-bottom: 1vh;">
-                            <p-tag styleClass="mr-2" value="พนักงานที่จะสิ้นสุดการปฏิบัติงาน {{amountEmployeeAlmostDone}} คน" severity="success" [style]="{'width': '45vh','font-size': '15px','margin-left':'35vh'}"></p-tag>
+                            <p-tag styleClass="mr-2" value="พนักงานที่จะสิ้นสุดการปฏิบัติงาน {{amountEmployeeAlmostDone}} คน" severity="success" [style]="{'width': '45vh','font-size': '15px','margin-left':'37vh'}"></p-tag>
                         </div>
                         <p-scrollPanel [style]="{width: '100%', height: '28.5rem'}">
-                            <div class="card" *ngFor="let employee of employeeAlmostDone">
+                            <div *ngFor="let employee of employeeAlmostDone" style="margin-bottom: 2rem;">
                                 <p-fieldset legend="{{employee[0].project}}">
                                     <div *ngFor="let employeeData of employee">
                                         <div class="card" style="margin-bottom: 2vh;padding: 2vh;">
                                             <p-tag styleClass="mr-2" value="{{employeeData.Name}}" [style]="{'width': '100%','font-size': '20px','color': '#495057','background': 'white'}"><i class="pi pi-user" style="margin-right: 1vh;"></i></p-tag>
                                             <div class="grid" style="margin-left: 0.5vh;">
-                                                <div class="grid-item">
-                                                    <div class="card" style="padding: 0.5vh;width: 27vh;">
+                                                <div>
+                                                    <div class="card" style="padding: 0.5vh;width: 20vh;">
                                                         <p-tag styleClass="mr-2" [style]="{'width': '100%','font-size': '15px'}" value="ตำแหน่งงาน"></p-tag>
                                                         <div style="text-align: center;"><br>{{employeeData.position}}</div>
                                                     </div>
                                                 </div>
-                                                <div class="grid-item">
+                                                <div>
                                                     <div class="card" style="padding: 0.5vh;">
                                                         <p-tag styleClass="mr-2" severity="success" [style]="{'width': '100%','font-size': '15px'}" value="วันที่เริ่มต้น"></p-tag>
                                                         <br>{{employeeData.employeeWorkingData.startDate | formatDate}}
                                                     </div>
                                                 </div>
-                                                <div class="grid-item">
+                                                <div>
                                                     <div class="card" style="padding: 0.5vh;">
                                                         <p-tag styleClass="mr-2" severity="danger" [style]="{'width': '100%','font-size': '15px'}" value="วันที่สิ้นสุด:"></p-tag>
                                                         <br>{{employeeData.employeeWorkingData.endDate | formatDate}}
@@ -132,35 +150,35 @@
 
 <div class="displays">
     <div class="grid">
-        <div class="grid-item">
-            <p-card header="พนักงานที่กำลังปฏิบัติงาน" [style]="{'width': '43.5rem', 'margin-bottom': '2em', 'height': '45rem'}">
+        <div>
+            <p-card header="พนักงานที่กำลังปฏิบัติงาน" [style]="{'width': '38.85rem', 'margin-bottom': '2em', 'height': '45rem'}">
                 <div style="padding-bottom: 1vh;">
-                    <p-tag styleClass="mr-2" value="กำลังปฏิบัติงานอยู่ {{amountEmployeeWorking}} คน" severity="danger" [style]="{'width': '25vh','font-size': '15px','margin-left':'58vh'}"></p-tag>
+                    <p-tag styleClass="mr-2" value="กำลังปฏิบัติงานอยู่ {{amountEmployeeWorking}} คน" severity="danger" [style]="{'width': '25vh','font-size': '15px','margin-left':'61vh'}"></p-tag>
                 </div>
                 <p-scrollPanel [style]="{width: '100%', height: '35rem'}">
                     <div style="font-size: 20px;">
-                        <div class="card" *ngFor="let employee of employeeWorking">
+                        <div *ngFor="let employee of employeeWorking" style="margin-bottom: 2rem;">
                             <p-fieldset legend="{{employee[0].project}}">
                                 <div *ngFor="let employeeData of employee">
-                                    <div class="card" style="margin-bottom: 2vh;padding: 2vh;">
+                                    <div class="card" style="margin-bottom: 2vh;padding: 1vh;">
                                         <p-tag styleClass="mr-2" value="{{employeeData.Name}}" [style]="{'width': '100%','font-size': '20px','color': '#495057','background': 'white'}"><i class="pi pi-user" style="margin-right: 1vh;"></i></p-tag>
                                         <div class="grid" style="margin-left: 0.5vh;">
-                                            <div class="grid-item">
-                                                <div class="card" style="padding: 0.5vh;width: 27vh;">
+                                            <div>
+                                                <div class="card" style="padding: 0.2vh;width: 25vh;">
                                                     <p-tag styleClass="mr-2" [style]="{'width': '100%','font-size': '15px'}" value="ตำแหน่งงาน"></p-tag>
-                                                    <div style="text-align: center;"><br>{{employeeData.position}}</div>
+                                                    <div style="text-align: center;font-size: 15px;"><br>{{employeeData.position}}</div>
                                                 </div>
                                             </div>
-                                            <div class="grid-item">
-                                                <div class="card" style="padding: 0.5vh;">
+                                            <div>
+                                                <div class="card" style="padding: 0.2vh;width: 18.5vh;">
                                                     <p-tag styleClass="mr-2" severity="success" [style]="{'width': '100%','font-size': '15px'}" value="วันที่เริ่มต้น"></p-tag>
-                                                    <br>{{employeeData.employeeWorkingData.startDate | formatDate}}
+                                                    <div style="text-align: center;font-size: 15px;"><br>{{employeeData.employeeWorkingData.startDate | formatDate}}</div>
                                                 </div>
                                             </div>
-                                            <div class="grid-item">
-                                                <div class="card" style="padding: 0.5vh;">
+                                            <div>
+                                                <div class="card" style="padding: 0.2vh;width: 18.5vh;">
                                                     <p-tag styleClass="mr-2" severity="danger" [style]="{'width': '100%','font-size': '15px'}" value="วันที่สิ้นสุด:"></p-tag>
-                                                    <br>{{employeeData.employeeWorkingData.endDate | formatDate}}
+                                                    <div style="text-align: center;font-size: 15px;"><br>{{employeeData.employeeWorkingData.endDate | formatDate}}</div>
                                                 </div>
                                             </div>
                                         </div>
@@ -173,29 +191,29 @@
                 </p-scrollPanel>
             </p-card>
         </div>
-        <div class="grid-item">
-            <p-card header="พนักงานที่ยังไม่ปฏิบัติงาน" [style]="{'width': '43.5rem', 'margin-bottom': '2em', 'height': '45rem'}">
+        <div>
+            <p-card header="พนักงานที่ยังไม่ปฏิบัติงาน" [style]="{'width': '38.85rem', 'margin-bottom': '2em', 'height': '45rem'}">
                 <div style="padding-bottom: 1vh;">
-                    <p-tag styleClass="mr-2" value="ยังไม่มีการปฏิบัติงาน {{employeeLeft}} คน" severity="success" [style]=" { 'width': '25vh', 'font-size': '15px', 'margin-left': '58vh'} "></p-tag>
+                    <p-tag styleClass="mr-2" value="ยังไม่มีการปฏิบัติงาน {{employeeLeft}} คน" severity="success" [style]=" { 'width': '28.5vh', 'font-size': '15px', 'margin-left': '58vh'} "></p-tag>
                 </div>
                 <p-scrollPanel [style]="{width: '100%', height: '35rem'} ">
                     <div class="card " style="margin-bottom: 2vh;padding: 2vh; " *ngFor="let employee of employeeFree ">
                         <p-tag styleClass="mr-2 " value="{{employee.firstName}} {{employee.lastName}} " [style]="{ 'width': '100%', 'font-size': '20px', 'color': '#495057', 'background': 'white'} "><i class="pi pi-user " style="margin-right: 1vh; "></i></p-tag>
                         <div class="displays ">
                             <div class="grid " style="margin-left: 0.5vh; ">
-                                <div class="grid-item ">
+                                <div>
                                     <div class="card " style="padding: 0.5vh;width: 20vh; ">
                                         <p-tag styleClass="mr-2 " [style]="{ 'width': '100%', 'font-size': '15px'} " value="ตำแหน่งงาน "></p-tag>
                                         <div style="text-align: center; "><br>{{employee.position}}</div>
                                     </div>
                                 </div>
-                                <div class="grid-item ">
+                                <div>
                                     <div class="card " style="padding: 0.5vh;width: 20vh; ">
                                         <p-tag styleClass="mr-2 " [style]="{ 'width': '100%', 'font-size': '15px'} " value="แผนก "></p-tag>
                                         <div style="text-align: center; "><br>{{employee.department}}</div>
                                     </div>
                                 </div>
-                                <div class="grid-item ">
+                                <div>
                                     <div class="card " style="padding: 0.5vh;width: 20vh; ">
                                         <p-tag styleClass="mr-2 " severity="success" [style]="{ 'width': '100%', 'font-size': '15px'} " value="สถานะ "></p-tag>
                                         <div style="text-align: center; "><br>ว่าง</div>

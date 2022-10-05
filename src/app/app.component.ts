@@ -46,7 +46,6 @@ export class AppComponent implements OnInit {
             if (today >= startDate && today <= endDate && operation['project']['status'] != 4) {
               operation['employee']['progress'] = empOp['empWorking'];
               this.pgpoolservice.updateEmployee(operation['employee']).subscribe();
-              console.log(operation)
             }else{
               operation['employee']['progress'] = null;
               this.pgpoolservice.updateEmployee(operation['employee']).subscribe();
@@ -66,7 +65,7 @@ export class AppComponent implements OnInit {
           const today = new Date();
           const endDate = new Date(project.projEndDate);
           endDate.setHours(23, 59, 59, 0);
-          if (today >= endDate && project.status !== 4) {
+          if (today >= endDate && project.status !== 4 && project.status !== 1) {
             project.status = 3;
             this.pgpoolservice.updateProject(project).subscribe();
           }

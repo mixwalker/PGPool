@@ -46,6 +46,10 @@ export class PGpoolService {
     return this.http.get<any>(`api/amount_employees`)
   }
 
+  getApproveProjectByQuery(month:string,year:string){
+    return this.http.get<any>(`api/approveproject/queryproject?month=${month}&year=${year}`)
+  }
+
   addEmployee(employee: any) {
     return this.http.post('api/employee', employee);
   }
@@ -62,6 +66,10 @@ export class PGpoolService {
     return this.http.post('api/employee_operation', empOp);
   }
 
+  addApproveProject(AppPro:any){
+    return this.http.post('api/approveproject', AppPro);
+  }
+
   deleteEmployee(empNo:string){
     return this.http.delete(`api/employee/${empNo}`);
   }
@@ -72,6 +80,10 @@ export class PGpoolService {
 
   deleteOperation(projRef:Number,empNo:string){
     return this.http.delete(`api/operation/?projRef=${projRef}&empNo=${empNo}`);
+  }
+
+  deleteEmpOp(empOpId:Number){
+    return this.http.delete(`api/employee_operation/${empOpId}`);
   }
 
   updateProject(project:any){

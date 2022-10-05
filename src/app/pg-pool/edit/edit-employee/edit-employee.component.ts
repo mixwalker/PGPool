@@ -21,7 +21,6 @@ export class EditEmployeeComponent implements OnInit {
   }
 
   closeImport() {
-    
     this.blockedImport = false;
     this.unBlock.emit(this.blockedImport)
   }
